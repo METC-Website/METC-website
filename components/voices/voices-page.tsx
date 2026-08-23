@@ -12,12 +12,14 @@ const LANGUAGE_STORAGE_KEY = "metc-language";
 
 type NodeStyle = CSSProperties & Record<`--voice-${string}`, string>;
 
-function FeedbackNode({ feedback, index, total, language, viewed, onOpen }: {
+function FeedbackNode({ feedback, index, total, language, viewed, guided, opening, onOpen }: {
   feedback: StudentFeedback;
   index: number;
   total: number;
   language: Language;
   viewed: boolean;
+  guided: boolean;
+  opening: boolean;
   onOpen: (feedback: StudentFeedback, trigger: HTMLButtonElement) => void;
 }) {
   const copy = voicesPageCopy[language];
@@ -34,25 +36,26 @@ function FeedbackNode({ feedback, index, total, language, viewed, onOpen }: {
     "--voice-drift-y": `${seed.driftY}px`
   };
   const status = viewed ? copy.opened : copy.unopened;
-  const label = `${copy.open} · ${copy.voice} ${index + 1} · ${status}`;
+  const action = viewed ? copy.reopen : copy.open;
+  const label = `${action} · ${copy.voice} ${index + 1} · ${status}`;
 
-  return <button className={`feedback-node feedback-node-${feedback.variant} feedback-node-${feedback.accent}${viewed ? " is-viewed" : ""}`} type="button" style={style} onClick={(event) => onOpen(feedback, event.currentTarget)} aria-label={label}>
-    <span className="feedback-node-orbit" aria-hidden="true"><span className="feedback-node-shape" /></span>
-    <span className="feedback-node-tooltip" aria-hidden="true">{copy.open}</span>
+  return <button className={`feedback-node feedback-node-${feedback.variant} feedback-node-${feedback.accent}${viewed ? " is-viewed" : ""}${guided ? " is-guided" : ""}${opening ? " is-opening" : ""}`} type="button" style={style} onClick={(event) => onOpen(feedback, event.currentTarget)} aria-label={label} aria-busy={opening}>
+    <span className="feedback-node-orbit" aria-hidden="true"><span className="feedback-node-shape feedback-envelope"><i className="feedback-envelope-paper" /><i className="feedback-envelope-pocket" /><i className="feedback-envelope-flap" /></span></span>
+    <span className="feedback-node-tooltip" aria-hidden="true">{guided ? copy.nextUp : action}</span>
   </button>;
 }
 
 function DecorativeStars() {
   return <div className="voices-decorative-stars" aria-hidden="true">
-    {Array.from({ length: 30 }, (_, index) => <i key={index} className={`decorative-star decorative-star-${index % 6}`} />)}
+    {Array.from({ length: 12 }, (_, index) => <i key={index} className={`decorative-star decorative-star-${index % 6}`} />)}
   </div>;
 }
 
 function VoicesWeather() {
   return <div className="voices-weather" aria-hidden="true">
-    {Array.from({ length: 10 }, (_, index) => <i key={`snow-${index}`} className={`voices-snow voices-snow-${index}`} />)}
-    {Array.from({ length: 5 }, (_, index) => <i key={`rain-${index}`} className={`voices-rain voices-rain-${index}`} />)}
-    {Array.from({ length: 4 }, (_, index) => <i key={`meteor-${index}`} className={`voices-meteor voices-meteor-${index}`} />)}
+    {Array.from({ length: 4 }, (_, index) => <i key={`snow-${index}`} className={`voices-snow voices-snow-${index}`} />)}
+    {Array.from({ length: 2 }, (_, index) => <i key={`rain-${index}`} className={`voices-rain voices-rain-${index}`} />)}
+    <i className="voices-meteor voices-meteor-0" />
   </div>;
 }
 
@@ -89,8 +92,8 @@ function FeedbackViewer({ feedback, index, language, onClose, onPrevious, onNext
       <button className="voices-viewer-close" type="button" onClick={onClose} ref={closeRef} aria-label={copy.close}>×</button>
       <button className="voices-viewer-nav voices-viewer-previous" type="button" onClick={onPrevious} aria-label={copy.previous}>←</button>
       <figure className="voices-photo-frame">
-        <div className="voices-photo-paper"><img src={feedback.imageSrc} alt={feedback.imageAlt[language]} /></div>
-        <figcaption><span>{copy.archive} · {String(index + 1).padStart(2, "0")}</span><strong>{feedback.year}{feedback.grade ? ` · ${feedback.grade[language]}` : ""}</strong></figcaption>
+        <div className="voices-photo-paper"><img src={feedback.imageSrc} alt={feedback.imageAlt[language]} fetchPriority="high" /></div>
+        <figcaption><span>{copy.archive} · {String(index + 1).padStart(2, "0")}</span>{feedback.grade && <strong>{feedback.grade[language]}</strong>}</figcaption>
       </figure>
       <button className="voices-viewer-nav voices-viewer-next" type="button" onClick={onNext} aria-label={copy.next}>→</button>
     </div>
@@ -102,11 +105,18 @@ export function VoicesPage() {
   const [languageReady, setLanguageReady] = useState(false);
   const [viewedIds, setViewedIds] = useState<Set<string>>(() => new Set());
   const [selectedFeedbackId, setSelectedFeedbackId] = useState<string | null>(null);
+  const [openingFeedbackId, setOpeningFeedbackId] = useState<string | null>(null);
   const [showEntryFlash, setShowEntryFlash] = useState(false);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const closeRef = useRef<HTMLButtonElement | null>(null);
+  const openingTimerRef = useRef<number | null>(null);
   const selectedIndex = Math.max(0, feedbacks.findIndex((feedback) => feedback.id === selectedFeedbackId));
   const selectedFeedback = selectedFeedbackId ? feedbacks[selectedIndex] : null;
+  const viewedCount = feedbacks.reduce((count, feedback) => count + Number(viewedIds.has(feedback.id)), 0);
+  const nextUnreadIndex = feedbacks.findIndex((feedback) => !viewedIds.has(feedback.id));
+  const guideIndex = nextUnreadIndex === -1 ? 0 : nextUnreadIndex;
+  const guideFeedback = feedbacks[guideIndex];
+  const allViewed = viewedCount === feedbacks.length;
 
   useEffect(() => {
     const saved = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
@@ -123,8 +133,11 @@ export function VoicesPage() {
     if (window.sessionStorage.getItem("metc-voices-entry") !== "flash") return;
     window.sessionStorage.removeItem("metc-voices-entry");
     setShowEntryFlash(true);
-    const timer = window.setTimeout(() => setShowEntryFlash(false), 760);
+    const timer = window.setTimeout(() => setShowEntryFlash(false), 220);
     return () => window.clearTimeout(timer);
+  }, []);
+  useEffect(() => () => {
+    if (openingTimerRef.current !== null) window.clearTimeout(openingTimerRef.current);
   }, []);
   useEffect(() => {
     if (!selectedFeedback) return;
@@ -149,9 +162,20 @@ export function VoicesPage() {
     });
   }
   function openFeedback(feedback: StudentFeedback, trigger: HTMLButtonElement) {
+    if (openingTimerRef.current !== null) return;
     triggerRef.current = trigger;
-    markViewed(feedback.id);
-    setSelectedFeedbackId(feedback.id);
+    if (viewedIds.has(feedback.id)) {
+      setSelectedFeedbackId(feedback.id);
+      return;
+    }
+    setOpeningFeedbackId(feedback.id);
+    const openingDuration = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 520;
+    openingTimerRef.current = window.setTimeout(() => {
+      markViewed(feedback.id);
+      setSelectedFeedbackId(feedback.id);
+      setOpeningFeedbackId(null);
+      openingTimerRef.current = null;
+    }, openingDuration);
   }
   function goToFeedback(index: number) {
     const wrapped = (index + feedbacks.length) % feedbacks.length;
@@ -180,10 +204,25 @@ export function VoicesPage() {
           <p className="voices-eyebrow">{copy.eyebrow}</p>
           <h1 id="voices-title">{copy.title}</h1>
           <p>{copy.body}</p>
-          <div className="voices-legend" aria-label={`${copy.unopened}; ${copy.visited}`}><span><i className="legend-petal legend-petal-unread" aria-hidden="true" />{copy.unopened}</span><span><i className="legend-petal legend-petal-read" aria-hidden="true" />{copy.visited}</span><button type="button" onClick={resetViewed} aria-label={copy.resetAria}>{copy.reset}</button></div>
+          <div className="voices-guide">
+            <div className="voices-guide-copy">
+              <span className="voices-guide-kicker">{copy.guideKicker}</span>
+              <strong>{copy.guideTitle}</strong>
+              <span>{copy.guideBody}</span>
+            </div>
+            <div className="voices-guide-actions">
+              <button type="button" onClick={(event) => openFeedback(guideFeedback, event.currentTarget)}>
+                <i className="voices-guide-envelope" aria-hidden="true" />
+                <span>{allViewed ? copy.revisit : viewedCount === 0 ? copy.start : copy.continue}</span>
+                <b aria-hidden="true">→</b>
+              </button>
+              <span className="voices-progress" aria-live="polite"><strong>{viewedCount}</strong> / {feedbacks.length} {copy.explored}</span>
+            </div>
+          </div>
+          <div className="voices-legend" aria-label={`${copy.unopened}; ${copy.visited}`}><span><i className="legend-envelope legend-envelope-sealed" aria-hidden="true" />{copy.unopened}</span><span><i className="legend-envelope legend-envelope-opened" aria-hidden="true" />{copy.visited}</span>{viewedCount > 0 && <button type="button" onClick={resetViewed} aria-label={copy.resetAria}>{copy.reset}</button>}</div>
         </div>
         <div className="feedback-sea" aria-label={copy.archive}>
-          {feedbacks.map((feedback, index) => <FeedbackNode key={feedback.id} feedback={feedback} index={index} total={feedbacks.length} language={language} viewed={viewedIds.has(feedback.id)} onOpen={openFeedback} />)}
+          {feedbacks.map((feedback, index) => <FeedbackNode key={feedback.id} feedback={feedback} index={index} total={feedbacks.length} language={language} viewed={viewedIds.has(feedback.id)} guided={index === nextUnreadIndex} opening={feedback.id === openingFeedbackId} onOpen={openFeedback} />)}
         </div>
         <p className="voices-sea-note" aria-hidden="true">METC · {copy.archive}</p>
       </section>
