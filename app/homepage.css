@@ -315,6 +315,13 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .hero-illustration .law-vector-force { stroke: var(--coral); stroke-width: 3.3; }.hero-illustration .law-vector-acceleration { stroke: #4d8599; }
 .hero-illustration .law-vector-label, .hero-illustration .law-mass, .hero-illustration .law-formula, .hero-illustration .law-caption { fill: rgba(25,55,47,.76); font-family: var(--accent); font-weight: 700; }
 .hero-illustration .law-vector-label { font-size: 8px; }.hero-illustration .law-force-label { fill: #c6654d; font-size: 11px; }.hero-illustration .law-mass { font-size: 13px; }.hero-illustration .law-formula { fill: var(--ink); font-size: 11px; }.hero-illustration .law-caption { font-size: 7px; letter-spacing: .08em; }
+.hero-illustration .stats-axis, .hero-illustration .stats-whisker, .hero-illustration .stats-median, .hero-illustration .stats-tick { fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; }
+.hero-illustration .stats-box { fill: rgba(159,206,222,.62); stroke: var(--ink); stroke-width: 2.2; }
+.hero-illustration .stats-median { stroke: var(--coral); stroke-width: 3; }.hero-illustration .stats-mean { fill: var(--sun); stroke: var(--ink); stroke-width: 1.8; }.hero-illustration .stats-mean-mark { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round; }
+.hero-illustration .stats-label, .hero-illustration .stats-caption { fill: rgba(25,55,47,.72); font-family: var(--accent); font-weight: 700; }.hero-illustration .stats-label { font-size: 7px; }.hero-illustration .stats-label-mean { fill: #c6654d; }.hero-illustration .stats-caption { font-size: 7px; letter-spacing: .08em; }
+.hero-illustration .banknote-paper { fill: rgba(167,199,173,.78); stroke: var(--ink); stroke-width: 2.3; }.hero-illustration .banknote-border { fill: rgba(255,250,240,.42); stroke: rgba(25,55,47,.5); stroke-width: 1.5; stroke-dasharray: 3 3; }.hero-illustration .banknote-seal { fill: var(--sun); stroke: var(--ink); stroke-width: 2; }
+.hero-illustration .banknote-emblem, .hero-illustration .banknote-corner, .hero-illustration .banknote-dash { fill: none; stroke: var(--ink); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }.hero-illustration .banknote-dash { stroke: rgba(25,55,47,.52); stroke-width: 1.3; }
+.hero-illustration .banknote-value, .hero-illustration .banknote-brand, .hero-illustration .banknote-caption { fill: rgba(25,55,47,.8); font-family: var(--accent); font-weight: 800; }.hero-illustration .banknote-value { font-size: 10px; }.hero-illustration .banknote-brand { font-size: 8px; letter-spacing: .08em; }.hero-illustration .banknote-caption { font-size: 7px; letter-spacing: .1em; }
 .hero-inner { width: min(1360px, 100%); margin: 0 auto; display: flex; flex-direction: column; justify-content: center; }
 .hero-eyebrow { color: var(--ink); margin-left: 6px; font-family: var(--display); font-size: clamp(.95rem, 1.25vw, 1.16rem); font-weight: 600; letter-spacing: .005em; text-transform: none; }
 .hero-logo-stage { position: relative; width: min(720px, 66vw); margin: clamp(4px, 1.5vh, 16px) 0 clamp(14px, 2vh, 26px); }
@@ -1503,7 +1510,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .rocket-sketch > span { font-size: .52rem; }
 }
 
-/* Hero lesson-map density: eleven sketches share a compact three-row field.
+/* Hero lesson-map density: thirteen sketches share a compact three-row field.
    The reading column remains calm while the right side feels like a filled
    teaching notebook rather than a collection of isolated floating marks. */
 @media (min-width: 1101px) {
@@ -1514,10 +1521,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
   .hero-newton-first { top: 58%; left: 41%; width: min(110px, 7.5vw); }
   .hero-bridge-lab { top: 57%; left: 55%; width: min(150px, 11.7vw); }
+  .hero-banknote { top: 58%; left: 67%; width: min(100px, 6.8vw); }
   .hero-newton-second { top: auto; bottom: 2%; left: 78%; width: min(110px, 7.5vw); }
   .hero-rocket { top: 53%; left: 90%; right: auto; width: min(120px, 8.3vw); }
 
   .hero-supplies { bottom: 3%; left: 33%; width: min(125px, 9.8vw); }
+  .hero-statistics { bottom: 2%; left: 42%; width: min(120px, 8.2vw); }
   .hero-economy { bottom: 2%; left: 51%; width: min(108px, 8.45vw); }
   .hero-optics { top: auto; right: auto; bottom: 3%; left: 66%; width: min(105px, 8.2vw); }
 }
@@ -1531,10 +1540,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
   .hero-newton-first { top: 48%; left: 43%; width: min(112px, 11vw); }
   .hero-bridge-lab { top: 46%; left: 61%; width: min(160px, 16vw); }
+  .hero-banknote { top: 62%; left: auto; right: 18%; width: min(100px, 10vw); }
   .hero-newton-second { top: auto; bottom: 7%; left: auto; right: 2%; width: min(112px, 11vw); }
   .hero-rocket { top: 42%; left: auto; right: 0; width: min(112px, 11vw); }
 
   .hero-supplies { bottom: 10%; left: 42%; width: min(130px, 13vw); }
+  .hero-statistics { bottom: 22%; left: 46%; width: min(110px, 11vw); }
   .hero-economy { bottom: 8%; left: 58%; width: min(112px, 11vw); }
   .hero-optics { top: auto; left: auto; right: 20%; bottom: 8%; width: min(110px, 11vw); }
 }
@@ -1542,7 +1553,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .hero-linear-function { --illustration-delay: .26s; }
 .hero-newton-first { --illustration-delay: .48s; }
 .hero-newton-second { --illustration-delay: .6s; }
+.hero-banknote { --illustration-delay: .7s; }
+.hero-statistics { --illustration-delay: .82s; }
 
 @media (max-width: 760px) {
-  .hero-linear-function, .hero-newton-first, .hero-newton-second { display: none; }
+  .hero-linear-function, .hero-newton-first, .hero-newton-second, .hero-statistics, .hero-banknote { display: none; }
 }

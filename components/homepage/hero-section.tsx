@@ -175,6 +175,32 @@ export function HeroSection({ language, onAnchorClick }: HeroSectionProps) {
           <text className="law-formula" x="151" y="103">F = ma</text>
           <text className="law-caption" x="17" y="130">NEWTON II · ACCELERATION</text>
         </svg>
+        <svg className="hero-illustration hero-statistics" viewBox="0 0 260 110">
+          <path className="stats-axis" d="M22 56h216" />
+          <path className="stats-whisker" d="M32 42v28M32 56h42M184 56h44M228 42v28" />
+          <rect className="stats-box" x="74" y="35" width="110" height="42" rx="3" />
+          <path className="stats-median" d="M126 35v42" />
+          <circle className="stats-mean" cx="153" cy="56" r="7" />
+          <path className="stats-mean-mark" d="m149 52 8 8m0-8-8 8" />
+          <path className="stats-tick" d="M74 51v10M184 51v10" />
+          <text className="stats-label" x="22" y="87">MIN</text>
+          <text className="stats-label" x="108" y="94">MEDIAN</text>
+          <text className="stats-label stats-label-mean" x="143" y="28">MEAN</text>
+          <text className="stats-label" x="212" y="87">MAX</text>
+          <text className="stats-caption" x="64" y="107">STATISTICAL SUMMARY</text>
+        </svg>
+        <svg className="hero-illustration hero-banknote" viewBox="0 0 220 100">
+          <rect className="banknote-paper" x="10" y="12" width="200" height="74" rx="7" />
+          <rect className="banknote-border" x="18" y="20" width="184" height="58" rx="4" />
+          <circle className="banknote-seal" cx="110" cy="49" r="21" />
+          <path className="banknote-emblem" d="M94 53c7-13 25-18 35-6-8 2-13 7-15 16-7-8-13-11-20-10zM110 32v34" />
+          <path className="banknote-corner" d="M27 29h15v12M193 29h-15v12M27 69h15V57M193 69h-15V57" />
+          <path className="banknote-dash" d="M51 31h24M51 67h24M145 31h24M145 67h24" />
+          <text className="banknote-value" x="29" y="54">01</text>
+          <text className="banknote-value" x="169" y="54">01</text>
+          <text className="banknote-brand" x="97" y="52">METC</text>
+          <text className="banknote-caption" x="60" y="98">LEARNING CREDIT</text>
+        </svg>
         <svg className="hero-illustration hero-supplies" viewBox="0 0 300 76">
           <path className="supply-rule" d="M15 45 154 14l5 22-139 31z" />
           <path className="supply-tick" d="m36 43 4 16m20-21 4 16m20-21 4 16m20-21 4 16m20-21 4 16m20-21 4 16" />
