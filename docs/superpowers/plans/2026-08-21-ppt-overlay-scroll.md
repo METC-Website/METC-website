@@ -1,5 +1,7 @@
 # PPT Overlay Scroll Implementation Plan
 
+> 历史实施记录：用于追溯已完成的 PPT 交互调整，不代表当前待办。
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
 **Goal:** Hide the underlying lesson dock during PPT preview and route non-slide wheel input to the course manual.

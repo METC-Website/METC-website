@@ -1,5 +1,7 @@
 # Mobile Typography and Illustration Restoration Implementation Plan
 
+> 历史实施记录：用于追溯已完成的排版与插画调整，不代表当前待办。
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task.
 
 **Goal:** Fine-tune mobile title typography and restore existing educational illustrations without changing content or assets.

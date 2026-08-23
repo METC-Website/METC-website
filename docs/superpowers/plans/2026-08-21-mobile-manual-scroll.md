@@ -1,5 +1,7 @@
 # Mobile Manual Internal Scroll Implementation Plan
 
+> 历史实施记录：用于追溯当时任务；当前 disclosure 行为以 sticky accordion 实现与现行代码为准。
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
 **Goal:** Keep the mobile manual frame fixed while scrolling only its course spread.

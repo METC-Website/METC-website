@@ -1,5 +1,7 @@
 # Mobile Secondary Layout Design
 
+> 历史设计记录：用于追溯已完成的移动端布局决策，不代表当前待办。
+
 ## Goal
 
 Reduce unnecessary vertical scrolling on the mobile teaching and activities pages while keeping the desktop composition unchanged and preserving the existing reading order.

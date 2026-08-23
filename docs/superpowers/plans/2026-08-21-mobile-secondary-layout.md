@@ -1,5 +1,7 @@
 # Mobile Secondary Layout Implementation Plan
 
+> 历史实施记录：用于追溯已完成的移动端改造，不代表当前待办或资源加载策略。
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans (recommended) to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Reduce mobile scroll length by making the teaching shelf and activity exhibition two-column layouts and collapsing secondary course-manual sections on phones, without changing tablet or desktop composition.

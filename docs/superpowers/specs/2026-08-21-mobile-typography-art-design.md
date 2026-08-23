@@ -1,5 +1,7 @@
 # Mobile Typography and Illustration Restoration
 
+> 历史设计记录：用于追溯已完成的排版与插画决策，不代表当前待办。
+
 ## Goal
 
 Improve the already-compact phone layout by keeping short English section titles on one line where they fit and restoring existing educational illustrations that were hidden during density tuning.

@@ -1,5 +1,7 @@
 # Mobile sticky accordion design
 
+> 历史设计记录：描述当前 sticky accordion 的设计来源；实现细节以现行代码为准。
+
 ## Goal
 
 Allow several mobile course-manual sections to remain open while their section titles take turns sticking to the top of the internal book scroll area.

@@ -1,5 +1,7 @@
 # METC Responsive Layout Implementation Plan
 
+> 历史实施记录：用于追溯当时任务，不代表当前待办或资源架构；现行实现以代码、README 与运维文档为准。
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Add phone and tablet layouts for the homepage, teaching, activities, and voices pages while preserving the desktop layout from baseline commit `522861a`.

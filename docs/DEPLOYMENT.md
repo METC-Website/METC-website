@@ -1,37 +1,36 @@
-# 静态部署指南
+# Vercel 部署指南
 
-本项目使用 Next.js 静态导出。`pnpm build` 生成 `out/`，该目录是部署产物，已被 Git 忽略，不能手动维护或提交。
+Vercel 是本项目唯一的部署目标。项目使用 Next.js `output: "export"`，`pnpm build` 生成 `out/`，Vercel 配置见根目录 `vercel.json`。
 
-## 当前部署状态
+## 部署边界
 
-尚未确定正式托管平台、域名、发布分支与 CI/CD 凭据，因此本仓库当前**没有实际生产部署**。后续负责人应先获得这些决策与授权，再配置平台。
+- GitHub Pages 工作流已移除，不再创建 Pages artifact 或 deployment。
+- Vercel 只部署应用代码、生成索引与 `public/images` 中少量站点外壳资源。
+- 课程、课件、活动照片与正式 Student Voice 图片从 Cloudflare R2 公共展示目录读取；`resources/` 与旧 `public/resources/` 不进入 Vercel 上传内容。
+- 生产部署使用域名根路径，不再依赖 `/METC-website`。资源索引中的历史前缀会由 `lib/site-path.ts` 兼容移除。
 
-当前 `next.config.ts` 设置 `basePath: "/METC-website"`。目标站点应服务在子路径 `/METC-website/`，例如：
+## Vercel 项目要求
 
-```text
-https://<domain>/METC-website/
-https://<domain>/METC-website/teaching/
-https://<domain>/METC-website/activities/
-https://<domain>/METC-website/voices/
-```
+GitHub 仓库只应连接一个正式 Vercel Project。项目设置必须为：
 
-若实际需要部署到域名根路径，必须先改动 `next.config.ts`、资源 URL 生成规则和反馈图片路径，并完成全站回归，不能只修改托管平台配置。
+| 设置 | 值 |
+| --- | --- |
+| Framework | Next.js |
+| Install Command | `pnpm install --frozen-lockfile` |
+| Build Command | `pnpm build` |
+| Output Directory | `out` |
+| Production Branch | `main` |
+| `NEXT_PUBLIC_RESOURCE_BASE_URL` | `https://assets.sciemetc.com` |
 
-## 发布前流程
+不要在 Vercel 中配置 `CF_ACCESS_CLIENT_ID`、`CF_ACCESS_CLIENT_SECRET`、Worker 写入地址或任何 R2 写入密钥；生成与上传资源只在受控本地维护环境执行。
 
-1. 确认真实内容已通过授权、双语文案审核、微信群二维码配置及资源生成检查。
-2. 安装锁定依赖：`pnpm install --frozen-lockfile`。
-3. 执行 `pnpm typecheck` 与 `pnpm build`。
-4. 通过本地静态服务器预览 `out/`，确认上述四个路由、图片、课件 PNG、相册、反馈图和二维码路径都包含 `/METC-website` 前缀。
-5. 将 `out/` 内容发布到目标平台对应的 `/METC-website/` 路径；为静态 HTML 设置合适的 404/目录索引策略。
-6. 在线检查桌面和手机、中文和英文、键盘操作、相册灯箱、课件全屏、资源链接及 HTTPS。
-7. 记录部署平台、项目地址、发布命令、域名/DNS 所有者、回滚步骤和负责人到本文件，避免将密钥写入 Git。
+## 发布流程
 
-## 需要由项目方确认的部署决策
+1. 先生成、上传并通过公共 HEAD 请求验证 R2 对象。
+2. 执行 `pnpm r2:verify-cache`、`pnpm typecheck` 与 `pnpm build`。
+3. 在功能分支检查 Preview Deployment。
+4. 合并至 `main`，由唯一的 Vercel Project 创建 Production Deployment。
+5. 在线验证 `/`、`/teaching`、`/activities`、`/voices` 及 R2 图片。
+6. 在同一浏览器页面会话中连续切换主要路由，确认 R2 URL 无重复预热、后台并发不超过 3、当前路由资源先于跨页资源，且切到后台时 Student Voice 动画暂停。
 
-- 托管平台（GitHub Pages、Cloudflare Pages、Netlify、Vercel 或学校服务器）及其账号所有者。
-- 域名、DNS、HTTPS 证书和实际子路径。
-- 发布分支、审核者、回滚窗口与备份方式。
-- 公开学生照片与课程资料的保存期限、下线与撤回流程。
-
-部署凭据、API 密钥、二维码原始来源和未公开学生素材不得提交到仓库。
+如果 GitHub Deployments 中出现多个 Vercel Production 环境，应在 Vercel 控制台解除旧 Project 与本仓库的连接，只保留正式 Project。

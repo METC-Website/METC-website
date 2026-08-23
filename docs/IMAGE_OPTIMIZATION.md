@@ -1,80 +1,38 @@
-# 图片优化指南（jpg → WebP）
+# 图片优化与缓存
 
-本文记录 METC 网站相册图片的 WebP 优化方案、R2 上传与部署流程。
+网站采用“上传前优化 + R2 直出”，不依赖 Next Image Server Optimization。
 
-## 背景：为什么不直接套用参考文档
+## 格式
 
-用户希望参照一份资源优化参考文档（Floatem 项目）对网站图片做 jpg→webp 优化。
-但该文档来自另一个 **Vite** 项目，其 `resources/raw` → `resources/optimized` 分离、
-`OptimizedImage` 组件、Vite 内容哈希、route 级 code splitting 在本项目（METC，Next.js 16
-静态导出）**均不适用**：
+- JPG/PNG 活动照片统一生成 WebP quality 80。
+- Student Voice 统一生成 WebP quality 82、最长边 2400px，并清除原始元数据。
+- HEIC 活动照片当前通过 macOS `sips` 生成 JPEG；后续可继续升级为 WebP。
+- syllabus 内嵌图片保持转换器输出格式，由课程清单记录并在用户进入网站后后台加载。
 
-- 本项目 `next.config.ts` 设 `images: { unoptimized: true }`，图片由 `withResourceBaseUrl()`
-  从 **Cloudflare R2 直出原图**，没有 `OptimizedImage`、没有 Vite 构建哈希。
-- 本项目图片由 `tools/resource_pipeline/generate_metadata.py` 扫描资源目录生成
-  `src/data/resources/generated/albums.json`，网页据此渲染。
+## 缓存
 
-因此本方案**改造 METC 自己的管线**做等价的 WebP 优化，而不是照搬参考脚本。
+当前 Worker 和公开域名为 R2 展示资源统一返回：
 
-## 方案
-
-改动 `tools/resource_pipeline/generate_metadata.py`：
-
-- 新增 `to_webp(original, album_root)`：对 jpg/png 原图在相册 `demonstration/` 目录生成
-  一份 `<hash>.webp`（Pillow `quality=80`），**原图不动**。
-- 新增 `WEBP_PILOT_ALBUMS` 作用域：
-  - 非空集合 = 只这些相册导出 WebP（其余相册保持 jpg，线上永不被破坏）；
-  - 空集 `set()` = 全部相册导出 WebP。
-- `build_albums()` 中 `pilot=True` 的相册，raster 照片 `src` 指向 webp；其余相册保持 jpg。
-- HEIC 原图始终走 macOS `sips` 转 jpg，**不转 webp**（本优化目标是「jpg 转 webp」）。
-
-> 注：参考文档里 `webp quality 80` 的设定被直接沿用到了 `to_webp()`。
-
-## 重跑管线（本地）
-
-重跑需要 **Pillow**（已装在 venv：`/Users/1012582291qq.com/.workbuddy/binaries/python/envs/default/bin/python`）。
-脚本读取 `resources/METC`，但 sparse clone 不含资源目录——完整资源在 `~/Desktop/resources`，
-需临时软链，跑完即删（资源按 R2 架构不进 git）：
-
-```bash
-cd METC-website-clean
-ln -sfn ~/Desktop/resources ./resources
-/workbuddy/binaries/python/envs/default/bin/python tools/resource_pipeline/generate_metadata.py
-rm -f resources   # 跑完删除软链，绝不提交
+```text
+Cache-Control: public, max-age=86400
 ```
 
-## R2 上传（必须做）
+这会让浏览器在一天内充分复用重复访问资源，同时允许固定 syllabus 路径在更新后于合理时间内生效。普通图片替换应生成新对象键或新 ID；Student Voice 可以覆盖稳定对象键，因为生成器会在 `imageSrc` 上更新基于 WebP 内容的版本参数。
 
-网站运行时从 R2 拉图。一旦把 `src` 指向 webp，就必须先把对应 webp 传上 R2，否则相册裂图。
+每次资源发布后执行：
 
-- 本地文件：`~/Desktop/resources/METC/活动成果展览/<学校>/demonstration/<hash>.webp`
-- R2 对象键（路径照抄，含中文目录）：`resources/METC/活动成果展览/<学校>/demonstration/<hash>.webp`
-- **Content-Type 必须设为 `image/webp`**（控制台上传时手动选，否则浏览器当附件下载）
-- 上传方式：Cloudflare 控制台 → R2 → 对应 bucket → 进上面文件夹 → 上传（可批量选中并设 Content-Type）
+```bash
+pnpm r2:verify-cache
+```
 
-## 部署顺序（关键）
+如果历史对象缺少缓存头，先检查 Worker/公开域名响应策略，再重新运行公共 HEAD 验证。本地工具不发送或伪造 Cache-Control、不持有 R2 S3 密钥，也不直接修改 bucket 元数据。若要把资源缓存延长到一年，必须在 Worker 中按资源类型设计版本化键和响应策略后修改。应用外壳下的 `public/images` 由 Vercel 设置一天浏览器缓存和七天后台重新验证；带内容哈希的 Next.js 构建资源继续使用平台的长期不可变缓存。
 
-1. 改脚本 / 重跑 → 生成 webp 并更新 `albums.json`
-2. **先把 webp 传 R2**（先传，避免窗口期裂图）
-3. 分支提交 → merge `main` → `git push origin main` → Vercel 自动重建
-4. 验证：R2 直链可见图；活动页相册显示 webp
+## 页面加载
 
-## Pilot 结果（上步小学）
+`components/resource-preloader.tsx` 在根布局挂载后使用会话级去重队列按当前路由分三级加载，最多三个后台并发请求：
 
-- 7 张 raster jpg → webp（写入 `demonstration/`，`src` 指向 webp）
-- 10 张 HEIC 原图保持 jpg（经 sips 转）
-- 其余 5 个相册保持 jpg，线上不受影响
-- 已通过分支 `content/image-webp-pilot` 合并并推送
+1. 立即加载当前页面最可能使用的关键资源，例如首页首张精选照片、活动页首本相册封面、首份 syllabus 或首封反馈；
+2. 当前页面完成首帧并空闲后，提高本页其余资源的队列优先级；
+3. 以 Low 优先级 `fetch` 逐步预热其他页面资源，不创建 `Image` 或提前解码图片。
 
-## 推广到全部相册
-
-1. 将 `WEBP_PILOT_ALBUMS = {"上步小学"}` 改为 `WEBP_PILOT_ALBUMS: set[str] = set()`
-2. 重跑管线（见上）→ 全部相册 raster 照片 `src` 指向 webp
-3. 把所有新生成的 webp 传 R2（见上）
-4. 提交合并推送
-
-## 注意事项
-
-- HEIC 原图不转 webp；如需连 HEIC 也压成 webp，改 `web_photo()` 让它直接出 webp。
-- 原 jpg 保留在资源目录作后备；R2 只需 webp 即可生效。
-- 临时软链 `resources` 绝不提交（资源走 R2，不在 git 仓库）。
+pathname 改变只调整既有队列优先级，不重建全站任务；`loaded`/`inFlight`/`queued` 集合保证同一会话不重复预热。开启系统省流量模式或处于 2G/slow-2G 网络时，只加载关键资源，不启动全站后台队列。正常网络仍会在进入网站后逐步缓存全站展示资源，重复访问由 R2 的 24 小时公共缓存直接复用。

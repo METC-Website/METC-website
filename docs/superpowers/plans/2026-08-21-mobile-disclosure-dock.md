@@ -1,5 +1,7 @@
 # Mobile Disclosure Dock Implementation Plan
 
+> 历史实施记录：底部 disclosure dock 已被后续 sticky accordion 方案取代，不得作为当前实现指引。
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
 **Goal:** Move the mobile course-manual collapse control from the top of the viewport to a bottom dock that avoids the cover, back button, and N control.

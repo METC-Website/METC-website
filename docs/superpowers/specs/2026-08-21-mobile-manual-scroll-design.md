@@ -1,5 +1,7 @@
 # Mobile manual internal scrolling design
 
+> 历史设计记录：用于追溯内部滚动决策；disclosure 行为以 sticky accordion 与现行代码为准。
+
 ## Goal
 
 Keep the mobile course manual’s outer frame, cover, and back control at the same top boundary while the course content scrolls inside the manual.

@@ -1,5 +1,7 @@
 # Mobile Homepage Section Density Design
 
+> 历史设计记录：用于追溯已完成的首页密度决策，不代表当前待办。
+
 ## Goal
 
 On phone-sized screens, make the homepage read as a sequence of compact modules: header, four homepage sections, and footer. Each section should be approximately one viewport tall instead of requiring several swipes before the next section begins.

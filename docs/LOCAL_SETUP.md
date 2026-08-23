@@ -61,7 +61,6 @@ cd METC-website-clean
 
 # 只真正检出以下子目录（其余部分不下载）
 git sparse-checkout set \
-  .github \
   app \
   components \
   content \
@@ -80,7 +79,7 @@ git sparse-checkout set \
 - `--filter=blob:none`：先不下载文件内容，用到再取。
 - `--sparse`：开启稀疏下载，配合 `sparse-checkout set` 只拉指定目录。
 
-> 首次 `git clone` 后只会看到顶层少量文件，这是正常的；执行完 `sparse-checkout set` 后那 11 个子目录才被真正拉下来。
+> 首次 `git clone` 后只会看到顶层少量文件，这是正常的；执行完 `sparse-checkout set` 后列出的目录才被真正拉下来。
 
 ---
 
@@ -90,7 +89,7 @@ git sparse-checkout set \
 pnpm install
 ```
 
-首次安装可能需要 1～3 分钟（会下载 `next` / `react` / `sharp` / `swc` 等）。看到 `Done in ...` 即完成。
+首次安装可能需要 1～3 分钟（会下载 `next` / `react` / `swc` 等）。看到 `Done in ...` 即完成。
 
 ---
 
@@ -115,19 +114,37 @@ pnpm dev
 - 改完代码保存后页面**自动热更新**，无需重启。
 - 首次启动会提示 Next.js 匿名遥测（telemetry），非错误；如需关闭：`npx next telemetry disable`。
 
+常用静态检查：
+
+```bash
+pnpm typecheck
+pnpm build
+```
+
+加载策略改动还需用真实浏览器连续访问 `/`、`/teaching`、`/activities` 和 `/voices`：同一 R2 URL 在一个页面会话中不得重复预热，后台并发上限为 3，非当前页资源应在首帧空闲后才开始。仅通过构建不能替代这项验证。
+
 ---
 
 ## 4. 关于资源文件（resources）与 R2
 
-网站图片 / 课件等资源的完整副本在仓库外的本地目录（如 `~/Desktop/resources/METC`），
-通过软链 `public/resources` 接入，并由脚本生成索引到 `src/data/resources/generated/`。
+公开图片、syllabus 和课件从 Cloudflare R2 加载。本地只需要仓库内的生成索引即可预览现有内容。
 
-**写代码时仍然只用原来的本地路径**（如 `/resources/METC/...`），渲染时由
-`lib/site-path.ts` 的 `withResourceBaseUrl()` 根据 `NEXT_PUBLIC_RESOURCE_BASE_URL`
-（默认指向开发用 R2 桶 `*.r2.dev`）自动改写成 R2 完整 URL。
+更新资源时，在受控私有目录准备 `resources/METC`，并设置：
 
-本地预览注意：若资源已上传到 R2，浏览器能直接显示；若资源只在本地、没传 R2，
-本地页面图片会 404。详见 `docs/RESOURCE_SYSTEM_ARCHITECTURE.md`。
+```bash
+export METC_RESOURCE_ROOT=/absolute/path/to/resources/METC
+```
+
+生成展示物后先上传并验证 R2，再提交生成索引。不要创建 `public/resources` 软链接，也不要把私有源文件提交到仓库。详见 `docs/RESOURCE_SYSTEM_ARCHITECTURE.md`。
+
+需要上传权限的维护者从 `.env.example` 了解字段，但不得复制真实值进 Git。将个人 Access Service Token 保存在仓库外权限为 `600` 的文件，再创建被 Git 忽略的本地入口：
+
+```bash
+ln -s /absolute/path/to/protected/worker.env .env.worker.local
+pnpm r2:check
+```
+
+本地文件只包含 `CF_ACCESS_CLIENT_ID`、`CF_ACCESS_CLIENT_SECRET`、Worker/公开域名和可选的 `METC_RESOURCE_ROOT`。不得把上传凭证配置到 Vercel。
 
 ---
 
@@ -151,4 +168,4 @@ git merge <type>/<short-description>
 git push
 ```
 
-> 注意：不要把 `next-env.d.ts` 等本地自动生成产物误提交进来。
+> 注意：`next-env.d.ts` 已由仓库跟踪，但 Next.js 的开发/构建命令可能临时改变其中的生成路径。除非本次任务有意更新 Next.js 类型入口，否则提交前应与 `HEAD` 对照并恢复测试产生的差异。

@@ -1,59 +1,37 @@
-# 教学资料、照片与封面上传规范
+# 公开资源维护规范
 
-本指南覆盖 Word、PPT、PDF 与活动照片。当前网站没有上传后台；“上传”指将已审核文件放入以下版本控制目录，再运行资源处理脚本。
+公开展示资源统一发布到 Cloudflare R2；仓库仅保存生成索引。当前没有 CMS 或网页上传后台，资源维护在受控本地环境完成。
 
-## 先判断资料类型
+## 分类
 
-| 资料 | 放置位置 | 网页展示方式 | 原始文件是否公开嵌入 |
-| --- | --- | --- | --- |
-| Word 课程大纲 | `resources/METC/课程设计/<课程名>/source/` | 转为经清理的 HTML | 否 |
-| PPT/PPTX | 同上 | 转 PDF，再转为逐页 PNG | 否 |
-| 既有 PDF 课件 | 同上 | 转为逐页 PNG | 否 |
-| 活动照片 | `resources/METC/活动成果展览/<学校名>/`，可按课次分子目录 | 相册、照片墙、灯箱 | 是，浏览器可用格式 |
-| HEIC 活动照片 | 同上 | 保留 HEIC 原图，同时生成 JPEG 展示副本 | 原 HEIC 否；JPEG 是 |
+| 资源 | 私有输入目录 | R2 公开展示目录 |
+| --- | --- | --- |
+| Word syllabus | `课程设计/<课程>/source/` | `课程设计/<课程>/demonstration/syllabus.*` |
+| PPT/PDF 课件 | 同上 | `课程设计/<课程>/demonstration/lesson*/` |
+| 活动照片 | `活动成果展览/<学校>/` | `活动成果展览/<学校>/demonstration/` |
+| Student Voice | `听ta们说/source/` | `听ta们说/demonstration/` |
 
-原始教学资料只放在 `source/`；不要把修改版、截图、缓存或转换结果放入其中。`demonstration/` 由脚本管理，不能手动当作原始素材库。
+以上路径均位于 `METC_RESOURCE_ROOT`。原始办公文件、未审核照片和敏感素材不得上传到 R2 公共展示目录。
 
-## 新增或更新课程资料
+## 更新规则
 
-1. 在 `resources/METC/课程设计/` 新建或选择课程目录，并保证其有 `source/` 子目录。
-2. 将原始 Word、PPT/PPTX、PDF 复制到 `source/`。中文大纲命名为 `syllabus.docx`，英文大纲命名为 `syllabus.en.docx`；每种语言只允许一个大纲。
-3. 新课程创建 `course.config.json`。至少明确 `id`、`order`、中英文 `title`、`school`、中英文 `category`、`summary`、`contains`。`lessonTitles` 可为网页课件配置人类可读标题。
-4. 运行 `docs/RESOURCE_PIPELINE.md` 的三个脚本，再查看 `course.json` 与 `/teaching`。
-5. 提交原始文件、配置、生成的 `demonstration/`、`course.json` 和 `src/data/resources/generated/courses.json`。
+1. 完成授权、隐私和内容审核。
+2. 将原始文件放入私有输入目录并维护配置 JSON。
+3. 运行对应生成脚本，检查 WebP/HTML/PNG 等展示物。
+4. 运行 Worker 上传器预检；全部对象通过后才允许上传。
+5. 通过 `upload.sciemetc.com` Worker 上传，再通过 `assets.sciemetc.com` 公共 URL 校验。
+6. 执行 `pnpm r2:verify-cache`，确认清单中的公开对象至少返回 24 小时公共缓存。缓存策略由 Worker/公开域名统一控制；本地工具不再直连 R2 修改 bucket 或对象元数据。
+7. 提交 `src/data/resources/generated/*.json`。
+8. 在 Vercel Preview 中检查页面后再合并 `main`。
 
-课件网页不会嵌入 Word、PPTX 或 PDF 原件，而是显示已生成的 HTML 或 PNG。这既避免浏览器兼容性问题，也确保用户不会在站内直接执行或编辑原始办公文件。
+前端不依赖交互或视口进入才开始下载图片。当前页面关键资源立即加载；其余 URL 只加入一次会话级队列，在首帧空闲后由最多 3 个低优先级 `fetch` 预热 HTTP 缓存，不提前解码图片。pathname 改变只更新既有任务的优先级，不重建全站队列；详见 [分级加载与缓存](RESOURCE_LOADING_AND_CACHE.md)。
 
-## 新增或更新活动照片
+活动相册通过 `album.config.json` 选择 `coverPhoto` 和 `homepageFeaturePhoto`。Student Voice 使用 `feedback.config.json`，必须设置 `approvedForPublicUse: true`。
 
-1. 在 `resources/METC/活动成果展览/` 选择或新建学校目录。目录名会直接作为相册名称。
-2. 放入经过授权和筛选的 JPG/JPEG/PNG/WebP/AVIF/GIF；可按 `L1`、`L2` 等课次建立子目录。HEIC 可保留原件，脚本会在 `demonstration/` 中生成网页 JPEG。
-3. 照片应去除无关截图、聊天界面、重复/模糊图，以及未经允许可识别的学生肖像。优先保留横竖构图兼具、能表现课堂互动或作品的图片。
-4. 可选：在学校目录添加或修改 `album.config.json`，按下文选择封面与首页精选图。
-5. 运行 `python3 tools/resource_pipeline/generate_metadata.py`，检查生成的 `album.json` 和 `/activities`。
-6. 提交原图、配置、HEIC 生成的 JPEG、`album.json` 与 `src/data/resources/generated/albums.json`。
+## 禁止事项
 
-## 相册封面与首页照片的选择
-
-相册配置使用相对于学校目录的路径；路径必须精确匹配原始照片，而不是 `demonstration/` 中的 JPEG。示例：
-
-```json
-{
-  "coverPhoto": "L3 activity/photo-001.heic",
-  "homepageFeaturePhoto": "L3 activity/photo-002.jpg"
-}
-```
-
-- `coverPhoto`：该学校在活动成果展览页的相册封面。未指定时，脚本按路径排序选择第一张可用照片。
-- `homepageFeaturePhoto`：该学校进入首页活动轮播的精选图。未指定时，该学校仍会出现在活动成果相册，但不会提供首页精选图。
-- 选择标准：主体明确、构图干净、信息量足够、画面可代表该校活动；避免人脸特写、敏感信息、竖图裁切后失去主题，或文字截图。
-- 修改配置后必须重新运行元数据脚本；脚本会把 HEIC 路径映射到生成的 JPEG，并更新图片 ID。
-
-课程本身没有单独的封面图片字段：`/teaching` 的书封由课程配置中的标题、分类、主题色 `color` 与图标 `icon` 渲染。不要为课程封面把任意照片塞进 `source/` 或 `demonstration/`；如未来需要图片课程封面，应先扩展数据模型、组件和本文件。
-
-## 提交前检查
-
-- 原始资料、配置和对应生成文件是否一同更新。
-- `/teaching` 中大纲语言、课件标题、封面书籍信息是否正确。
-- `/activities` 中封面、首页精选图、照片顺序与灯箱是否正确。
-- 不存在 `.DS_Store`、Office 临时文件（例如 `~$*.pptx`）、重复导出图或未授权照片。
+- 不将真实内容新增到 `public/images` 或 `public/resources`。
+- 不创建或分发 R2 S3 Access Key；上传只使用个人 Cloudflare Access Service Token。
+- 不将 Access Client Secret、未审核源文件或私有目录提交到 Git、日志或 Vercel。
+- 不直接手改 `demonstration/` 或生成索引。
+- 不在 R2 上传后遗漏 Content-Type、既定公共缓存头和公共访问验证。

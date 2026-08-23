@@ -1,57 +1,55 @@
 # 资源处理流程
 
-资源处理脚本位于 `tools/resource_pipeline/`，从仓库根目录运行。新增或替换课程资料、活动照片、封面配置后再执行。
+资源脚本从仓库根目录运行，输入根目录由 `METC_RESOURCE_ROOT` 指定。
 
 ```bash
 python3 tools/resource_pipeline/convert_docx.py
 python3 tools/resource_pipeline/convert_pptx.py
 python3 tools/resource_pipeline/generate_metadata.py
+pnpm resources:feedback
 ```
 
-## 每个脚本做什么
+| 脚本 | 作用 |
+| --- | --- |
+| `convert_docx.py` | DOCX → 经清理的 syllabus HTML 与图片；图片声明 eager/async，供全站预加载器提前发现 |
+| `convert_pptx.py` | PPT/PDF → 预览 PDF 与逐页 PNG |
+| `generate_metadata.py` | 活动照片 → WebP/JPEG 展示物；生成课程和相册索引 |
+| `generate_student_feedback.py` | 审核后的反馈照片 → WebP；生成 Student Voice 索引 |
+| `r2_sync.mjs` | 检查 Worker Access、执行上传前校验、通过 Worker 上传、验证管理与公共 URL |
 
-| 命令 | 输入 | 输出 | 写入边界 |
-| --- | --- | --- | --- |
-| `convert_docx.py` | `source/*.docx` | `demonstration/syllabus.zh|en.html`、JSON、图片资产 | 不写入 `source/` |
-| `convert_pptx.py` | `source/*.pptx`、`*.ppt`、`*.pdf` | `demonstration/lessonN/preview.pdf`、slide PNG、`preview.json` | 会重建对应 `lessonN/` |
-| `generate_metadata.py` | 配置、展示文件、活动照片 | 每课程 `course.json`、每学校 `album.json`、前端课程/相册索引 | HEIC 可生成 JPEG 预览 |
+## 依赖
 
-DOCX 使用 LibreOffice 转换，并以白名单清理 HTML，只保留安全的标题、段落、列表、表格、图片和链接。PPT/PDF 使用 LibreOffice（PPT 时）和 Poppler 转成浏览器可预览的 PNG。网页只消费这些生成物，而不嵌入办公文档。
+- Python 3 与 Pillow
+- LibreOffice/soffice
+- Poppler `pdftoppm`
+- macOS `sips`（HEIC）
+- Node.js、pnpm
+- 每位维护者独立的 Cloudflare Access Service Token
 
-## 环境依赖
-
-- Python 3
-- LibreOffice 或 `soffice`：DOCX/PPT 转换
-- Poppler 的 `pdftoppm`：PDF 转 PNG
-- macOS `sips`：将 HEIC 生成 JPEG 展示副本
-- Pillow（可选）：为相册照片读取尺寸；缺失时相册仍可生成
-
-先用下列命令确认关键依赖：
+## R2 命令
 
 ```bash
-command -v soffice || command -v libreoffice
-command -v pdftoppm
-command -v sips
+pnpm r2:check
+pnpm r2:verify-write
+pnpm r2:verify-object -- <resources/对象键> <Content-Type>
+pnpm r2:preflight -- <本地展示文件> <resources/对象键> [Content-Type]
+pnpm r2:upload -- <本地展示文件> <resources/对象键> [Content-Type]
+pnpm r2:preflight-feedback
+pnpm r2:upload-feedback
+pnpm r2:verify-feedback
+pnpm r2:verify-cache
 ```
 
-可只处理一个课程，以减少等待时间：
+`r2:preflight` 在任何写入前校验本地秘密文件权限、Access 凭证、固定 Worker/公开域名、文件存在性、100 MB 限制、展示文件 MIME、Unicode NFC 对象键、`resources/` 前缀以及 `source` 禁止规则。`r2:upload` 只有在同一套预检通过后才执行 `PUT`，随后同时验证受保护 Worker `GET` 和公开域名 `HEAD`。
 
-```bash
-python3 tools/resource_pipeline/convert_docx.py --course "经济-微观经济"
-python3 tools/resource_pipeline/convert_pptx.py --course "经济-微观经济"
-python3 tools/resource_pipeline/generate_metadata.py
-```
+`r2:verify-write` 会在 `resources/_admin-test/` 创建唯一文本对象并验证公开读取。上传器不会自动删除它；删除必须针对用户明确确认的完整对象键单独执行。`r2:verify-cache` 只读取公共响应头，不使用写入凭证，也不会修改历史对象。
 
-## 可再生文件与版本控制
+所有公开展示物先上传 R2，再提交引用它们的生成索引。Vercel 构建不运行资源转换，也不包含私有资源目录。
 
-`demonstration/`、`course.json`、`album.json` 与 `src/data/resources/generated/*.json` 都是生成文件，但须提交到 Git。它们既是静态导出所需的网页资源，也使未安装转换工具的部署环境能直接构建。
+Student Voice 使用扁平路径 `听ta们说/source/<id>.<ext>` 与 `听ta们说/demonstration/<id>.webp`，清单不记录年份或学校分类。生成的 `imageSrc` 带有基于 WebP 内容的版本参数，允许同名 R2 对象更新后安全绕过旧浏览器缓存；上传对象键本身保持稳定。运行 `pnpm resources:feedback` 前必须通过当前 shell 提供 `METC_RESOURCE_ROOT`；Worker 命令则会从本地 `.env.worker.local` 加载同一字段。
 
-`source/` 中的 DOCX、PPTX、PDF 与活动照片是不可由脚本恢复的原始内容，必须谨慎保留、随版本提交，并按授权处理。
+## 版本控制
 
-## 常见问题
+需要提交：配置模板、处理脚本、`src/data/resources/generated/*.json`。
 
-- **没有找到转换工具**：安装 LibreOffice/Poppler，或在具备依赖的 macOS 机器执行转换后提交生成文件。
-- **PPT 顺序不符合预期**：转换脚本按 `source/` 文件名排序编号。使用稳定的文件名前缀，或通过 `course.config.json` 的 `lessonTitles` 调整展示标题。
-- **封面没有变化**：确认 `album.config.json` 的路径相对学校目录、指向原始照片，随后运行 `generate_metadata.py`。
-- **HEIC 没有显示**：确认 `sips` 可用；不要删除相册目录下的 `demonstration/*.jpg`。
-- **Word 大纲格式异常**：先在 Word 中检查原文件，重新运行 DOCX 转换；不要直接手改生成 HTML，手改会在下次转换丢失。
+不得提交：私有源目录、`.env.worker.local`、真实 Access Client Secret、生成的展示图片、`out/`、`public/resources/`。

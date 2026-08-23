@@ -1,5 +1,7 @@
 # Mobile disclosure dock design
 
+> 历史设计记录：本方案已被后续 sticky accordion 方案取代，不得作为当前实现指引。
+
 ## Goal
 
 Keep all four mobile course-manual sections—About this course, Included topics, Syllabus preview, and Lesson slides—easy to collapse without covering the course cover, back button, page heading, or the final lines of content while the user scrolls.

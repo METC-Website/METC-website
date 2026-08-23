@@ -1,5 +1,7 @@
 # Mobile Sticky Accordion Implementation Plan
 
+> 历史实施记录：描述 sticky accordion 的实施来源；当前行为与细节以现行代码为准。
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
 **Goal:** Replace the mobile bottom disclosure dock with native sticky accordion titles inside the book scroll container.

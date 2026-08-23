@@ -1,53 +1,62 @@
-# 学生反馈照片上传与前端适配
+# Student Voice 图片生成与上传
 
-`/voices` 页面已有可访问的反馈浏览交互，但当前 `content/voices/feedbacks.ts` 仅引用 6 张演示 SVG，并以 12 个数据项循环复用。这些演示素材必须在真实内容上线前替换，不能被误认为学生真实反馈。
+正式学生反馈与活动照片使用同一个 Cloudflare R2 公共资源源。正式清单是页面唯一内容源，不保留本地 Demo 回退。
 
-## 上传前的内容与隐私审核
+## 隐私边界
 
-1. 取得学校、监护人和/或项目规范要求的书面授权；确认照片可公开用于网站。
-2. 遮挡学生姓名、学号、电话号码、聊天头像、家庭地址和其他敏感信息。含人脸时，确认肖像授权；不确定时优先裁切、打码或不用。
-3. 保留原始可追溯文件在受限的项目素材存储中；仓库只保存获准公开的版本。不要把未审原件推送到 Git。
-4. 与内容负责人确认每条反馈的中英文说明、年份、年级和展示顺序。不要擅自翻译、改写或夸大原话。
+1. 取得学校、监护人和项目规范要求的公开授权。
+2. 移除姓名、学号、电话、地址、聊天头像等敏感信息。
+3. 未审核原图只保存在私有素材库；公共 R2 只接收审核通过、去元数据后的 WebP。
+4. 每条反馈须确认双语替代文本和展示顺序；不按年份或学校建立子目录。
 
-## 当前上传方式
+## 私有工作目录
 
-将已审核、面向公开展示的图片放在：
+环境变量 `METC_RESOURCE_ROOT` 指向私有 `resources/METC` 目录：
 
 ```text
-public/images/voices/
+听ta们说/
+├── feedback.config.json
+├── source/<feedback-id>.<原始扩展名>
+└── demonstration/<feedback-id>.webp
 ```
 
-建议使用 JPG、PNG 或 WebP；单张尽量小于 1 MB，长边约 1600–2400 px。纸条、手写反馈优先保持完整边缘和可读性；必要时先做透视校正、裁切和轻度曝光调整，但不得改变文字含义。
+从 `tools/resource_pipeline/templates/student-feedback.config.json` 复制配置模板。每项必须设置唯一小写 `id`、源文件、双语说明，并显式填写 `approvedForPublicUse: true`。
 
-随后修改 `content/voices/feedbacks.ts`：
+## 生成、上传、验证
 
-```ts
-{
-  id: "feedback-2026-001",
-  imageSrc: "/METC-website/images/voices/feedback-2026-001.jpg",
-  imageAlt: {
-    zh: "学生对纸桥课程的手写反馈",
-    en: "A student's handwritten reflection on the paper-bridge lesson"
-  },
-  year: "2026",
-  grade: { zh: "七年级", en: "Grade 7" },
-  accent: "coral",
-  variant: "petal"
-}
+```bash
+pnpm resources:feedback
+pnpm r2:check
+pnpm r2:preflight-feedback
+pnpm r2:upload-feedback
+pnpm r2:verify-feedback
+pnpm r2:verify-cache
+pnpm typecheck
+pnpm build
 ```
 
-每条反馈应有唯一、稳定的 `id`；删除现有演示数据而不是继续复用 SVG。`imageSrc` 必须包含 `/METC-website` 前缀，因为当前静态部署使用该基础路径。
+生成脚本会校验授权字段和文件类型、应用 EXIF 方向、限制长边为 2400px、去除原始元数据，并以 WebP quality 82 输出。前端清单写入 `src/data/resources/generated/feedbacks.json`，其中 `imageSrc` 自动附加由 WebP 内容生成的短 SHA-256 版本参数；覆盖同名 R2 对象后，浏览器会立即请求新版本，而不会复用含旧内容的缓存。只提交该清单，不提交私有原图或生成图片。
 
-## 前端已完成的适配
+上传脚本为每张图提供并验证：
 
-- 图片数据通过 `StudentFeedback` 类型统一管理，支持中英文 `imageAlt`、年份、年级、颜色和视觉变体。
-- 页面会将图片放入可点击的反馈节点；打开后可用关闭、左右按钮和键盘左右方向键浏览。
-- 对话框使用 `role="dialog"`、焦点初始定位和 Tab 焦点循环；Esc 可关闭。
-- 已阅读状态只存于浏览器 cookie，可由访客重置；反馈内容不上传到服务器、不记录个人身份。
-- 图片从 `public/images/voices/` 以静态路径提供，不需要后端上传接口、数据库或对象存储。
+- `Content-Type: image/webp`
+- Worker/公开域名响应：`Cache-Control: public, max-age=86400`
+- 对象键：`resources/METC/听ta们说/demonstration/<id>.webp`
 
-## 当前限制与未来升级建议
+上传器会先对整份清单完成原子式预检；任何文件、对象键、授权或 Worker Access 检查失败时，不会开始上传。每个上传成功对象随后通过受保护 Worker GET 与公开域名 HEAD 验证。
 
-当前系统不做登录、审核流、权限控制、图片压缩队列或服务器端隐私处理。实际反馈数量增加后，建议引入受控上传后台、私有原图存储、审核状态、可撤回机制和内容版本记录；在此之前，必须由人工审核后再提交公开版本。
+最后必须在真实浏览器打开 `/voices`：信封数量、`feedbacks.json` 条目数和本次批准的 WebP 数量必须完全一致；不得出现旧 Demo、年份/学校筛选或无法公开读取的图片。首封图片作为当前页关键资源，其余反馈图在首帧空闲后进入会话级去重队列。
 
-修改后运行 `pnpm typecheck`、`pnpm build`，并在 `/voices` 检查桌面与手机画面、图片清晰度、替代文本和键盘操作。
+## 所需凭证
+
+真实值只能放在仓库外的安全文件或本地被忽略的 `.env.worker.local` 中：
+
+```text
+CF_ACCESS_CLIENT_ID
+CF_ACCESS_CLIENT_SECRET
+R2_WORKER_UPLOAD_URL
+NEXT_PUBLIC_RESOURCE_BASE_URL
+METC_RESOURCE_ROOT
+```
+
+Access Service Token 必须属于保护 `upload.sciemetc.com` 的同一 Zero Trust Account，并被对应 Service Auth Policy 接受。不要在聊天、Git、脚本、日志、前端变量或 Vercel 中暴露 Client Secret；不要为本地维护者创建 R2 S3 密钥。

@@ -1,5 +1,7 @@
 # PPT overlay scroll design
 
+> 历史设计记录：用于追溯已完成的 PPT 交互决策，不代表当前待办。
+
 ## Goal
 
 Make the third-level PPT preview visually independent from the second-level course manual while preserving access to the manual’s scroll position.
