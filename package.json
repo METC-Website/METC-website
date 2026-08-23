@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "next typegen && tsc --noEmit",
+    "contact:qr": "node tools/contact_qr/update_contact_qr.mjs",
     "resources:feedback": "python3 tools/resource_pipeline/generate_student_feedback.py",
     "r2:check": "node --env-file-if-exists=.env.worker.local tools/resource_pipeline/r2_sync.mjs --check-access",
     "r2:preflight": "node --env-file-if-exists=.env.worker.local tools/resource_pipeline/r2_sync.mjs --preflight-upload",

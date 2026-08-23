@@ -25,7 +25,15 @@ export type HomepageCopy = {
       label: string;
       joinLabel: string;
       contactLabel: string;
-      join: { eyebrow: string; title: string; body: string; qrAlt: string; qrUnavailable: string };
+      join: {
+        eyebrow: string;
+        title: string;
+        body: string;
+        qrAlt: string;
+        qrUnavailable: string;
+        qrExpired: string;
+        qrExpiresLabel: string;
+      };
       contact: {
         eyebrow: string;
         title: string;
@@ -72,7 +80,15 @@ export type HomepageCopy = {
     statementLabel: string;
     statements: Record<
       "privacy" | "copyright" | "website",
-      { label: string; title: string; body: string[] }
+      {
+        label: string;
+        title: string;
+        body: string[];
+        developers?: {
+          label: string;
+          members: Array<{ name: string; email: string }>;
+        };
+      }
     >;
     copyright: string;
   };

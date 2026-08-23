@@ -40,7 +40,9 @@ export const zh: HomepageCopy = {
         title: "加入 METC",
         body: "扫描微信二维码，与社团取得联系。",
         qrAlt: "METC 微信二维码",
-        qrUnavailable: "社团联系二维码即将在这里提供。"
+        qrUnavailable: "微信群二维码暂时无法显示，请等待工作人员更新。",
+        qrExpired: "微信群二维码已过期，请等待工作人员更新。",
+        qrExpiresLabel: "有效期至"
       },
       contact: {
         eyebrow: "联系",
@@ -120,8 +122,16 @@ export const zh: HomepageCopy = {
         title: "网站声明",
         body: [
           "本网站为 METC（Math and Engineering Teaching Club）官方网站。",
-          "教学资源与课堂记录用于教育分享，并会随着资料归档持续更新。"
-        ]
+          "教学资源与课堂记录用于教育分享，并会随着资料归档持续更新。",
+          "肖像及反馈隐私说明：本站展示的课堂照片、活动影像与反馈内容仅用于教育分享和社团记录。若任何照片或反馈内容涉及您的肖像权或个人隐私，请通过“联系我们”与我们联系并说明相关内容；核实后，我们会及时删除。"
+        ],
+        developers: {
+          label: "开发团队",
+          members: [
+            { name: "Hank Chen", email: "s22230.chen@stu.scie.com.cn" },
+            { name: "Sheryl Xu", email: "s24670.xu@stu.scie.com.cn" }
+          ]
+        }
       }
     },
     copyright: "© 2026 METC。保留所有权利。"

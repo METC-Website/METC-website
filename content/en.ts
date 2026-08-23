@@ -40,7 +40,9 @@ export const en: HomepageCopy = {
         title: "Join METC",
         body: "Scan the WeChat QR code to connect with the club.",
         qrAlt: "METC WeChat QR code",
-        qrUnavailable: "The club contact code will be available here soon."
+        qrUnavailable: "The WeChat group QR code is temporarily unavailable. Please wait for the team to update it.",
+        qrExpired: "The WeChat group QR code has expired. Please wait for the team to update it.",
+        qrExpiresLabel: "Valid through"
       },
       contact: {
         eyebrow: "Contact",
@@ -120,8 +122,16 @@ export const en: HomepageCopy = {
         title: "Website statement",
         body: [
           "This is the official website of METC — Math and Engineering Teaching Club.",
-          "Teaching resources and classroom records are published for educational sharing and may be updated as the archive grows."
-        ]
+          "Teaching resources and classroom records are published for educational sharing and may be updated as the archive grows.",
+          "Portrait and feedback privacy: Classroom photographs, activity images, and feedback shown on this website are used only for educational sharing and club documentation. If any photograph or feedback concerns your image rights or personal privacy, please contact us through “Contact us” and identify the relevant content. We will verify and remove it promptly."
+        ],
+        developers: {
+          label: "Developers",
+          members: [
+            { name: "Hank Chen", email: "s22230.chen@stu.scie.com.cn" },
+            { name: "Sheryl Xu", email: "s24670.xu@stu.scie.com.cn" }
+          ]
+        }
       }
     },
     copyright: "© 2026 METC. All rights reserved."

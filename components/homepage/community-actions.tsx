@@ -3,16 +3,19 @@
 import { useEffect, useRef, useState } from "react";
 import { homepageCopy, type Language } from "../../content";
 import { withSiteBasePath } from "../../lib/site-path";
+import contactQr from "../../src/data/resources/generated/contact-qr.json";
 
 type CommunityAction = "join" | "contact";
+type QrStatus = "checking" | "available" | "expired" | "error";
 
-const JOIN_QR_CODE_SRC = withSiteBasePath("/images/contact/wechat-join-qr.png");
-const JOIN_QR_CODE_IS_CONFIGURED = false;
+const JOIN_QR_CODE_SRC = withSiteBasePath(contactQr.imageSrc);
+const JOIN_QR_CODE_EXPIRY = Date.parse(contactQr.expiresAt);
+const MAX_TIMEOUT_MILLISECONDS = 2_147_483_647;
 
 export function CommunityActions({ language }: { language: Language }) {
   const community = homepageCopy[language].explore.community;
   const [activeAction, setActiveAction] = useState<CommunityAction | null>(null);
-  const [qrAvailable, setQrAvailable] = useState(JOIN_QR_CODE_IS_CONFIGURED);
+  const [qrStatus, setQrStatus] = useState<QrStatus>("checking");
   const openerRef = useRef<HTMLButtonElement | null>(null);
   const closeRef = useRef<HTMLButtonElement | null>(null);
 
@@ -20,6 +23,22 @@ export function CommunityActions({ language }: { language: Language }) {
     setActiveAction(null);
     requestAnimationFrame(() => openerRef.current?.focus());
   };
+
+  useEffect(() => {
+    let expiryTimer: ReturnType<typeof setTimeout> | undefined;
+    const refreshQrStatus = () => {
+      const remaining = JOIN_QR_CODE_EXPIRY - Date.now();
+      if (!Number.isFinite(JOIN_QR_CODE_EXPIRY) || remaining <= 0) {
+        setQrStatus("expired");
+        return;
+      }
+      setQrStatus((current) => current === "error" ? current : "available");
+      expiryTimer = setTimeout(refreshQrStatus, Math.min(remaining, MAX_TIMEOUT_MILLISECONDS));
+    };
+
+    refreshQrStatus();
+    return () => clearTimeout(expiryTimer);
+  }, []);
 
   useEffect(() => {
     if (!activeAction) return;
@@ -56,9 +75,22 @@ export function CommunityActions({ language }: { language: Language }) {
                 <h2 id="community-dialog-title">{community.join.title}</h2>
                 <p>{community.join.body}</p>
                 <div className="join-qr-frame">
-                  {qrAvailable ? (
-                    <img src={JOIN_QR_CODE_SRC} alt={community.join.qrAlt} onError={() => setQrAvailable(false)} />
-                  ) : <span>{community.join.qrUnavailable}</span>}
+                  {qrStatus === "available" ? (
+                    <>
+                      <img src={JOIN_QR_CODE_SRC} alt={community.join.qrAlt} onError={() => setQrStatus("error")} />
+                      <p className="join-qr-expiry">
+                        {community.join.qrExpiresLabel}{" "}
+                        <time dateTime={contactQr.expiresAt}>
+                          {new Intl.DateTimeFormat(language === "zh" ? "zh-CN" : "en-GB", {
+                            dateStyle: "medium",
+                            timeZone: "Asia/Shanghai",
+                          }).format(JOIN_QR_CODE_EXPIRY)}
+                        </time>
+                      </p>
+                    </>
+                  ) : (
+                    <span>{qrStatus === "expired" ? community.join.qrExpired : community.join.qrUnavailable}</span>
+                  )}
                 </div>
               </>
             ) : (

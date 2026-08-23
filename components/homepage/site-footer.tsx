@@ -78,6 +78,19 @@ export function SiteFooter({ language }: SiteFooterProps) {
             <p className="section-eyebrow">METC · {footer.statementLabel}</p>
             <h2 id="statement-dialog-title">{activeContent.title}</h2>
             {activeContent.body.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            {activeContent.developers ? (
+              <div className="statement-developers">
+                <h3>{activeContent.developers.label}</h3>
+                <ul>
+                  {activeContent.developers.members.map((developer) => (
+                    <li key={developer.email}>
+                      <span>{developer.name}</span>
+                      <a href={`mailto:${developer.email}`}>{developer.email}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
           </section>
         </div>
       ) : null}
