@@ -1514,14 +1514,14 @@ button, a { -webkit-tap-highlight-color: transparent; }
    The reading column remains calm while the right side feels like a filled
    teaching notebook rather than a collection of isolated floating marks. */
 @media (min-width: 1101px) {
-  .hero-cell { top: 34%; left: 33%; width: min(105px, 8.2vw); }
-  .hero-linear-function { top: 33%; left: 45%; width: min(115px, 7.8vw); }
-  .hero-note-strip { top: 34%; left: 58%; width: min(140px, 10.9vw); }
+  .hero-cell { top: 32%; left: 32%; width: min(105px, 8.2vw); }
+  .hero-linear-function { top: 29%; left: 47%; width: min(115px, 7.8vw); }
+  .hero-note-strip { top: 34%; left: 61%; width: min(140px, 10.9vw); }
   .hero-books { top: 31%; left: 77%; right: auto; width: min(180px, 14.1vw); }
 
-  .hero-newton-first { top: 58%; left: 41%; width: min(110px, 7.5vw); }
-  .hero-bridge-lab { top: 57%; left: 55%; width: min(150px, 11.7vw); }
-  .hero-banknote { top: 58%; left: 67%; width: min(100px, 6.8vw); }
+  .hero-newton-first { top: 58%; left: 39.5%; width: min(110px, 7.5vw); }
+  .hero-bridge-lab { top: 55%; left: 57%; width: min(150px, 11.7vw); }
+  .hero-banknote { top: 59%; left: 70%; width: min(100px, 6.8vw); }
   .hero-newton-second { top: auto; bottom: 2%; left: 78%; width: min(110px, 7.5vw); }
   .hero-rocket {
     top: 40%;
@@ -1530,10 +1530,10 @@ button, a { -webkit-tap-highlight-color: transparent; }
     width: clamp(190px, 17vw, 240px);
   }
 
-  .hero-supplies { bottom: 3%; left: 33%; width: min(125px, 9.8vw); }
-  .hero-statistics { bottom: 2%; left: 42%; width: min(120px, 8.2vw); }
-  .hero-economy { bottom: 2%; left: 51%; width: min(108px, 8.45vw); }
-  .hero-optics { top: auto; right: auto; bottom: 3%; left: 66%; width: min(105px, 8.2vw); }
+  .hero-supplies { bottom: 3%; left: 31%; width: min(125px, 9.8vw); }
+  .hero-statistics { bottom: 2%; left: 44%; width: min(120px, 8.2vw); }
+  .hero-economy { bottom: 2%; left: 55%; width: min(108px, 8.45vw); }
+  .hero-optics { top: auto; right: auto; bottom: 3%; left: 68%; width: min(105px, 8.2vw); }
 }
 
 @media (min-width: 761px) and (max-width: 1100px) {
