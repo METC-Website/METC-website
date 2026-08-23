@@ -85,12 +85,10 @@ export const en: HomepageCopy = {
   voices: {
     eyebrow: "04 — Student Voices",
     title: "After one class, what stays with them?",
-    leadQuote: "I used to think engineering meant making the correct answer. Then I learned that when the model falls, that is when we really start thinking.",
-    leadName: "Lin",
-    leadGrade: "Grade 8 · Bridge Lab",
+    leadQuote: "In my opinion, this ECA was very suitable and great for us. It teaches us unique and different information on many topics.",
     sideStories: [
-      { quote: "It was the first time someone really asked me: why did you predict that?", name: "Zhou", grade: "Grade 7 · Math Exploration" },
-      { quote: "When I could explain it to my group, I realized I actually understood it.", name: "Chen", grade: "Grade 9 · Student TA" }
+      { quote: "Very good. I love maths. Next time we could learn about shapes and areas." },
+      { quote: "Their voices are clear and explain it clearly. Making complex sentences more simple." }
     ],
     closing: "Learning leaves a voice. / 学习会留下声音。",
     demoCta: "Enter Feedback"

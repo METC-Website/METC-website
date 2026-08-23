@@ -22,16 +22,13 @@ export function VoicesSection({ language, onVoicesEnter }: VoicesSectionProps) {
         <div className="editorial-quote reveal">
           <span className="quote-mark" aria-hidden="true">“</span>
           <blockquote>{voices.leadQuote}</blockquote>
-          <p><strong>{voices.leadName}</strong><span>{voices.leadGrade}</span></p>
           <svg className="quote-underline" viewBox="0 0 540 38" aria-hidden="true"><path d="M8 27 C124 5 337 33 529 13" /></svg>
         </div>
 
         <div className="voice-margins reveal">
-          {voices.sideStories.map((story, index) => (
-            <article key={story.name}>
-              <span>0{index + 2}</span>
+          {voices.sideStories.map((story) => (
+            <article key={story.quote}>
               <blockquote>“{story.quote}”</blockquote>
-              <p>{story.name} · {story.grade}</p>
             </article>
           ))}
         </div>

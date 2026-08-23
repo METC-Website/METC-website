@@ -85,12 +85,10 @@ export const zh: HomepageCopy = {
   voices: {
     eyebrow: "04 — 听 TA 们说",
     title: "一次课堂以后，他们把什么带走？",
-    leadQuote: "我以前觉得工程就是把正确答案做出来。后来才发现，模型倒下去的时候，我们才真的开始思考。",
-    leadName: "林同学",
-    leadGrade: "八年级 · Bridge Lab",
+    leadQuote: "在我看来，这次 ECA 非常适合我们，也很棒。它教给我们许多主题中独特而不同的知识。",
     sideStories: [
-      { quote: "第一次有人认真问我：你为什么这样猜？", name: "周同学", grade: "七年级 · 数学探索" },
-      { quote: "当我向同组的人解释清楚时，我才发现自己真的懂了。", name: "陈同学", grade: "九年级 · 学生助教" }
+      { quote: "非常好，我喜欢数学。下次我们可以学习图形和面积。" },
+      { quote: "他们的声音很清晰，讲解也很清楚，让复杂的句子变得更简单。" }
     ],
     closing: "Learning leaves a voice. / 学习会留下声音。",
     demoCta: "进入反馈"

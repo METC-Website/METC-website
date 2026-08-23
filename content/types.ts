@@ -61,9 +61,7 @@ export type HomepageCopy = {
     eyebrow: string;
     title: string;
     leadQuote: string;
-    leadName: string;
-    leadGrade: string;
-    sideStories: Array<{ quote: string; name: string; grade: string }>;
+    sideStories: Array<{ quote: string }>;
     closing: string;
     demoCta: string;
   };
