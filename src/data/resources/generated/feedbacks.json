@@ -1,0 +1,79 @@
+[
+  {
+    "id": "feedback-001",
+    "imageSrc": "/METC-website/resources/METC/%E5%90%ACta%E4%BB%AC%E8%AF%B4/demonstration/feedback-001.webp?v=e36e0fe18034",
+    "objectKey": "resources/METC/听ta们说/demonstration/feedback-001.webp",
+    "imageAlt": {
+      "zh": "学生感谢课堂教学并表达继续参与课程期待的手写反馈",
+      "en": "A handwritten student reflection thanking the teachers and looking forward to more classes"
+    },
+    "accent": "coral",
+    "variant": "envelope"
+  },
+  {
+    "id": "feedback-002",
+    "imageSrc": "/METC-website/resources/METC/%E5%90%ACta%E4%BB%AC%E8%AF%B4/demonstration/feedback-002.webp?v=4885776197e9",
+    "objectKey": "resources/METC/听ta们说/demonstration/feedback-002.webp",
+    "imageAlt": {
+      "zh": "学生肯定课程内容、教学方式与耐心讲解的英文手写反馈",
+      "en": "An English handwritten reflection praising the course content, teaching style, and patient explanations"
+    },
+    "accent": "sun",
+    "variant": "envelope"
+  },
+  {
+    "id": "feedback-003",
+    "imageSrc": "/METC-website/resources/METC/%E5%90%ACta%E4%BB%AC%E8%AF%B4/demonstration/feedback-003.webp?v=28c15ecebce9",
+    "objectKey": "resources/METC/听ta们说/demonstration/feedback-003.webp",
+    "imageAlt": {
+      "zh": "学生表达喜欢数学并期待学习图形与面积的简短手写反馈",
+      "en": "A short handwritten reflection about enjoying mathematics and wanting to learn shapes and area"
+    },
+    "accent": "sky",
+    "variant": "envelope"
+  },
+  {
+    "id": "feedback-004",
+    "imageSrc": "/METC-website/resources/METC/%E5%90%ACta%E4%BB%AC%E8%AF%B4/demonstration/feedback-004.webp?v=8ae9e4e65be8",
+    "objectKey": "resources/METC/听ta们说/demonstration/feedback-004.webp",
+    "imageAlt": {
+      "zh": "学生感谢高中生教师教授数学、天文与中文词汇的双语手写反馈",
+      "en": "A bilingual handwritten reflection thanking student teachers for lessons in mathematics, astronomy, and Chinese vocabulary"
+    },
+    "accent": "mint",
+    "variant": "envelope"
+  },
+  {
+    "id": "feedback-005",
+    "imageSrc": "/METC-website/resources/METC/%E5%90%ACta%E4%BB%AC%E8%AF%B4/demonstration/feedback-005.webp?v=0fff1ef844d2",
+    "objectKey": "resources/METC/听ta们说/demonstration/feedback-005.webp",
+    "imageAlt": {
+      "zh": "学生对课程连续性、时间安排与每日学习提出建议的双语手写反馈",
+      "en": "A bilingual handwritten reflection suggesting a stable lesson sequence, timetable guidance, and daily learning"
+    },
+    "accent": "rose",
+    "variant": "envelope"
+  },
+  {
+    "id": "feedback-006",
+    "imageSrc": "/METC-website/resources/METC/%E5%90%ACta%E4%BB%AC%E8%AF%B4/demonstration/feedback-006.webp?v=cc0f30a5f4ab",
+    "objectKey": "resources/METC/听ta们说/demonstration/feedback-006.webp",
+    "imageAlt": {
+      "zh": "学生肯定教师解答问题并建议预留更多答疑时间的英文手写反馈",
+      "en": "An English handwritten reflection praising question support and suggesting more time for answers"
+    },
+    "accent": "lavender",
+    "variant": "envelope"
+  },
+  {
+    "id": "feedback-007",
+    "imageSrc": "/METC-website/resources/METC/%E5%90%ACta%E4%BB%AC%E8%AF%B4/demonstration/feedback-007.webp?v=5ef9bcc68e94",
+    "objectKey": "resources/METC/听ta们说/demonstration/feedback-007.webp",
+    "imageAlt": {
+      "zh": "学生肯定清晰讲解并将复杂内容简化的英文手写反馈",
+      "en": "An English handwritten reflection praising clear explanations that make complex ideas simpler"
+    },
+    "accent": "coral",
+    "variant": "envelope"
+  }
+]
