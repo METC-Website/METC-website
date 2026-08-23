@@ -1510,16 +1510,16 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .hero-cell { top: 34%; left: 33%; width: min(105px, 8.2vw); }
   .hero-linear-function { top: 33%; left: 45%; width: min(115px, 7.8vw); }
   .hero-note-strip { top: 34%; left: 58%; width: min(140px, 10.9vw); }
-  .hero-books { top: 31%; left: 74%; right: auto; width: min(180px, 14.1vw); }
+  .hero-books { top: 31%; left: 77%; right: auto; width: min(180px, 14.1vw); }
 
   .hero-newton-first { top: 58%; left: 41%; width: min(110px, 7.5vw); }
   .hero-bridge-lab { top: 57%; left: 55%; width: min(150px, 11.7vw); }
-  .hero-newton-second { top: 58%; left: 76%; width: min(110px, 7.5vw); }
-  .hero-rocket { top: 58%; left: 92%; right: auto; width: min(80px, 6.25vw); }
+  .hero-newton-second { top: auto; bottom: 2%; left: 78%; width: min(110px, 7.5vw); }
+  .hero-rocket { top: 53%; left: 90%; right: auto; width: min(120px, 8.3vw); }
 
   .hero-supplies { bottom: 3%; left: 33%; width: min(125px, 9.8vw); }
   .hero-economy { bottom: 2%; left: 51%; width: min(108px, 8.45vw); }
-  .hero-optics { top: auto; right: auto; bottom: 3%; left: 72%; width: min(105px, 8.2vw); }
+  .hero-optics { top: auto; right: auto; bottom: 3%; left: 66%; width: min(105px, 8.2vw); }
 }
 
 @media (min-width: 761px) and (max-width: 1100px) {
@@ -1531,12 +1531,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
   .hero-newton-first { top: 48%; left: 43%; width: min(112px, 11vw); }
   .hero-bridge-lab { top: 46%; left: 61%; width: min(160px, 16vw); }
-  .hero-newton-second { top: 63%; left: auto; right: 4%; width: min(112px, 11vw); }
-  .hero-rocket { top: 44%; left: auto; right: 0; width: min(82px, 8vw); }
+  .hero-newton-second { top: auto; bottom: 7%; left: auto; right: 2%; width: min(112px, 11vw); }
+  .hero-rocket { top: 42%; left: auto; right: 0; width: min(112px, 11vw); }
 
   .hero-supplies { bottom: 10%; left: 42%; width: min(130px, 13vw); }
   .hero-economy { bottom: 8%; left: 58%; width: min(112px, 11vw); }
-  .hero-optics { top: auto; left: auto; right: 3%; bottom: 8%; width: min(110px, 11vw); }
+  .hero-optics { top: auto; left: auto; right: 20%; bottom: 8%; width: min(110px, 11vw); }
 }
 
 .hero-linear-function { --illustration-delay: .26s; }
