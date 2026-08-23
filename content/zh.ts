@@ -87,7 +87,7 @@ export const zh: HomepageCopy = {
     title: "一次课堂以后，他们把什么带走？",
     leadQuote: "在我看来，这次 ECA 非常适合我们，也很棒。它教给我们许多主题中独特而不同的知识。",
     sideStories: [
-      { quote: "非常好，我喜欢数学。下次我们可以学习图形和面积。" },
+      { quote: "我们回答问题时，他们会给我们小零食。这种教学方式给了我们更多鼓励，也让我们更有信心回答问题。" },
       { quote: "他们的声音很清晰，讲解也很清楚，让复杂的句子变得更简单。" }
     ],
     closing: "Learning leaves a voice. / 学习会留下声音。",

@@ -87,7 +87,7 @@ export const en: HomepageCopy = {
     title: "After one class, what stays with them?",
     leadQuote: "In my opinion, this ECA was very suitable and great for us. It teaches us unique and different information on many topics.",
     sideStories: [
-      { quote: "Very good. I love maths. Next time we could learn about shapes and areas." },
+      { quote: "They gave us treats when we answered a question. This teaching style gave us more encouragement and made us more confident to answer questions." },
       { quote: "Their voices are clear and explain it clearly. Making complex sentences more simple." }
     ],
     closing: "Learning leaves a voice. / 学习会留下声音。",
