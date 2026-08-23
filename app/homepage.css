@@ -1523,7 +1523,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .hero-bridge-lab { top: 57%; left: 55%; width: min(150px, 11.7vw); }
   .hero-banknote { top: 58%; left: 67%; width: min(100px, 6.8vw); }
   .hero-newton-second { top: auto; bottom: 2%; left: 78%; width: min(110px, 7.5vw); }
-  .hero-rocket { top: 53%; left: 90%; right: auto; width: min(120px, 8.3vw); }
+  .hero-rocket {
+    top: 40%;
+    left: auto;
+    right: 1.5%;
+    width: clamp(190px, 17vw, 240px);
+  }
 
   .hero-supplies { bottom: 3%; left: 33%; width: min(125px, 9.8vw); }
   .hero-statistics { bottom: 2%; left: 42%; width: min(120px, 8.2vw); }
@@ -1542,7 +1547,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .hero-bridge-lab { top: 46%; left: 61%; width: min(160px, 16vw); }
   .hero-banknote { top: 62%; left: auto; right: 18%; width: min(100px, 10vw); }
   .hero-newton-second { top: auto; bottom: 7%; left: auto; right: 2%; width: min(112px, 11vw); }
-  .hero-rocket { top: 42%; left: auto; right: 0; width: min(112px, 11vw); }
+  .hero-rocket { top: 40%; left: auto; right: 0; width: min(224px, 24vw); }
 
   .hero-supplies { bottom: 10%; left: 42%; width: min(130px, 13vw); }
   .hero-statistics { bottom: 22%; left: 46%; width: min(110px, 11vw); }
