@@ -46,8 +46,8 @@ function AlbumCard({ album, index, language, onOpen }: { album: ActivityAlbum; i
     <button className="wooden-album" type="button" onClick={(event) => onOpen(album, event.currentTarget)} aria-label={`${copy.open}: ${localized(language, album.title)}`}>
       <span className="album-binding" aria-hidden="true"><i /><i /><i /></span>
       <span className="album-cover-photos" aria-hidden="true">
-        {supporting.map((photo, photoIndex) => <img key={photo.id} className={`album-cover-photo album-cover-photo-${photoIndex + 1}`} src={photo.src} alt="" style={{ objectPosition: photo.position }} />)}
-        <span className="album-main-photo"><img src={main.src} alt="" style={{ objectPosition: main.position }} /></span>
+        {supporting.map((photo, photoIndex) => <img key={photo.id} className={`album-cover-photo album-cover-photo-${photoIndex + 1}`} src={photo.src} alt="" fetchPriority={index === 0 ? "high" : "low"} style={{ objectPosition: photo.position }} />)}
+        <span className="album-main-photo"><img src={main.src} alt="" fetchPriority={index === 0 ? "high" : "low"} style={{ objectPosition: main.position }} /></span>
         <span className="album-photo-tape tape-left" /><span className="album-photo-tape tape-right" />
       </span>
       <span className="album-plaque">
@@ -80,7 +80,7 @@ function AlbumExhibition({ language, onOpen }: { language: Language; onOpen: (al
 
 function PhotoTile({ photo, language, onOpen }: { photo: GalleryPhoto; language: Language; onOpen: (trigger: HTMLButtonElement) => void }) {
   return <button className={`scrapbook-photo scrapbook-photo-${photo.size}`} type="button" onClick={(event) => onOpen(event.currentTarget)} aria-label={localized(language, photo.alt)}>
-    <span className="scrapbook-photo-image"><img src={photo.src} alt={localized(language, photo.alt)} loading="lazy" style={{ objectPosition: photo.position }} /></span>
+    <span className="scrapbook-photo-image"><img src={photo.src} alt={localized(language, photo.alt)} decoding="async" style={{ objectPosition: photo.position }} /></span>
     {photo.caption && <span className="scrapbook-caption">{localized(language, photo.caption)}</span>}
     <i className="photo-corner photo-corner-a" aria-hidden="true" /><i className="photo-corner photo-corner-b" aria-hidden="true" />
   </button>;
@@ -158,7 +158,7 @@ export function ActivitiesPage() {
 
   useEffect(() => { const saved = window.localStorage.getItem(LANGUAGE_STORAGE_KEY); setLanguage(saved === "zh" || saved === "en" ? saved : "en"); setLanguageReady(true); }, []);
   useEffect(() => { if (!languageReady) return; document.documentElement.lang = language === "zh" ? "zh-CN" : "en"; window.localStorage.setItem(LANGUAGE_STORAGE_KEY, language); }, [language, languageReady]);
-  useEffect(() => { if (window.sessionStorage.getItem("metc-gallery-entry") !== "flash") return; window.sessionStorage.removeItem("metc-gallery-entry"); setShowEntryFlash(true); const timer = window.setTimeout(() => setShowEntryFlash(false), 760); return () => window.clearTimeout(timer); }, []);
+  useEffect(() => { if (window.sessionStorage.getItem("metc-gallery-entry") !== "flash") return; window.sessionStorage.removeItem("metc-gallery-entry"); setShowEntryFlash(true); const timer = window.setTimeout(() => setShowEntryFlash(false), 220); return () => window.clearTimeout(timer); }, []);
   useEffect(() => { if (selectedPhotoIndex === null) return; lightboxCloseRef.current?.focus(); }, [selectedPhotoIndex]);
   useEffect(() => {
     if (!selectedAlbum) return;

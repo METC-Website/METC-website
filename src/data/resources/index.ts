@@ -38,6 +38,7 @@ export type ResourceCourse = {
   contains: LocalizedCourseItems;
   hasSyllabus: boolean;
   syllabus: LocalizedResourcePath;
+  syllabusAssets?: Record<"zh" | "en", string[]>;
   syllabusSource: LocalizedResourcePath;
   lessons: ResourceDeck[];
 };
@@ -71,6 +72,10 @@ export const resourceCourses = (courseData as ResourceCourse[]).map((course) => 
   syllabus: {
     zh: normalizeResourcePath(course.syllabus.zh),
     en: normalizeResourcePath(course.syllabus.en),
+  },
+  syllabusAssets: {
+    zh: (course.syllabusAssets?.zh ?? []).map((asset) => withResourceBaseUrl(asset) ?? asset),
+    en: (course.syllabusAssets?.en ?? []).map((asset) => withResourceBaseUrl(asset) ?? asset),
   },
   lessons: course.lessons.map((lesson) => ({
     ...lesson,

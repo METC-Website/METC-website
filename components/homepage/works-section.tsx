@@ -124,7 +124,7 @@ export function ActivitySection({ language, onGalleryEnter }: ActivitySectionPro
             }}
           >
             {leavingPhoto ? <img key={`leaving-${leavingPhoto.src}`} className={`classroom-photo classroom-photo-leaving classroom-photo-${slideDirection}`} src={leavingPhoto.src} alt="" aria-hidden="true" style={{ objectPosition: leavingPhoto.objectPosition }} onAnimationEnd={() => setLeavingPhotoIndex(null)} /> : null}
-            <img key={`active-${activePhoto.src}`} className={`classroom-photo${leavingPhoto ? ` classroom-photo-entering classroom-photo-${slideDirection}` : " classroom-photo-static"}`} src={activePhoto.src} alt={activePhoto.alt} style={{ objectPosition: activePhoto.objectPosition }} />
+            <img key={`active-${activePhoto.src}`} className={`classroom-photo${leavingPhoto ? ` classroom-photo-entering classroom-photo-${slideDirection}` : " classroom-photo-static"}`} src={activePhoto.src} alt={activePhoto.alt} fetchPriority="high" style={{ objectPosition: activePhoto.objectPosition }} />
             <span className="photo-counter">{String(activePhotoIndex + 1).padStart(2, "0")} / {String(totalPhotos).padStart(2, "0")}</span>
             {totalPhotos > 1 ? <>
               <button className="classroom-carousel-control classroom-carousel-previous" type="button" onClick={previousPhoto} aria-label={language === "zh" ? "上一张照片" : "Previous photo"}>←</button>

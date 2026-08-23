@@ -36,6 +36,12 @@
       "zh": "/METC-website/resources/METC/%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1/%E7%BB%8F%E6%B5%8E-%E5%BE%AE%E8%A7%82%E7%BB%8F%E6%B5%8E/demonstration/syllabus.zh.html",
       "en": "/METC-website/resources/METC/%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1/%E7%BB%8F%E6%B5%8E-%E5%BE%AE%E8%A7%82%E7%BB%8F%E6%B5%8E/demonstration/syllabus.en.html"
     },
+    "syllabusAssets": {
+      "zh": [],
+      "en": [
+        "/METC-website/resources/METC/%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1/%E7%BB%8F%E6%B5%8E-%E5%BE%AE%E8%A7%82%E7%BB%8F%E6%B5%8E/demonstration/syllabus.en-assets/syllabus.en_html_67cfbade.gif"
+      ]
+    },
     "syllabusSource": {
       "zh": null,
       "en": null
@@ -194,6 +200,10 @@
       "zh": "/METC-website/resources/METC/%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1/%E7%89%A9%E7%90%86-%E5%85%89/demonstration/syllabus.zh.html",
       "en": "/METC-website/resources/METC/%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1/%E7%89%A9%E7%90%86-%E5%85%89/demonstration/syllabus.en.html"
     },
+    "syllabusAssets": {
+      "zh": [],
+      "en": []
+    },
     "syllabusSource": {
       "zh": null,
       "en": null
@@ -288,6 +298,10 @@
       "zh": "/METC-website/resources/METC/%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1/%E7%BB%8F%E6%B5%8E-%E5%AE%8F%E8%A7%82/demonstration/syllabus.zh.html",
       "en": "/METC-website/resources/METC/%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1/%E7%BB%8F%E6%B5%8E-%E5%AE%8F%E8%A7%82/demonstration/syllabus.en.html"
     },
+    "syllabusAssets": {
+      "zh": [],
+      "en": []
+    },
     "syllabusSource": {
       "zh": null,
       "en": null
@@ -328,6 +342,10 @@
     "syllabus": {
       "zh": null,
       "en": null
+    },
+    "syllabusAssets": {
+      "zh": [],
+      "en": []
     },
     "syllabusSource": {
       "zh": null,

@@ -529,7 +529,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
 /* Toast and motion */
 .site-notice { position: fixed; z-index: 130; left: 50%; bottom: 28px; max-width: calc(100vw - 32px); padding: 13px 18px; border-radius: 999px; background: var(--ink-deep); color: white; box-shadow: 0 18px 48px rgba(0,0,0,.22); opacity: 0; transform: translate(-50%,18px); pointer-events: none; transition: opacity 220ms ease, transform 220ms ease; font-size: .82rem; }
 .site-notice.show { opacity: 1; transform: translate(-50%,0); }
-.library-entry-flash { position: fixed; z-index: 180; inset: 0; pointer-events: none; background: linear-gradient(135deg, #fffaf0, #f7efdc 48%, #e6eee1); animation: libraryEntryFlash 340ms cubic-bezier(.32,.72,.36,1) forwards; }
 .reveal-enabled .reveal { opacity: 0; transform: translateY(32px); transition: opacity 700ms cubic-bezier(.2,.72,.22,1), transform 700ms cubic-bezier(.2,.72,.22,1); }
 .reveal-enabled .reveal.is-visible { opacity: 1; transform: none; }
 @keyframes drawLogo { to { stroke-dashoffset: 0; } }
@@ -553,7 +552,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
 @keyframes siteSnow { 5% { opacity: .78; } 100% { opacity: 0; transform: translate(56px, 104vh) scale(.55); } }
 @keyframes siteRain { 5% { opacity: .45; } 100% { opacity: 0; transform: translate(82px, 108vh) rotate(13deg); } }
 @keyframes siteMeteor { 5% { opacity: 0; transform: translate(0, 0) rotate(-34deg); } 15% { opacity: .86; } 31% { opacity: 0; transform: translate(-320px, 210px) rotate(-34deg); } 100% { opacity: 0; } }
-@keyframes libraryEntryFlash { 0% { opacity: 0; } 45% { opacity: 1; } 100% { opacity: 1; } }
 
 /* Tablet */
 @media (max-width: 1020px) {
@@ -692,7 +690,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .metc-logo-laser, .metc-logo-atmosphere, .hero-particle, .shooting-star, .site-atmosphere { display: none; }
   .hero-illustration { opacity: 1; clip-path: none; transform: none; }
   .reveal-enabled .reveal { opacity: 1; transform: none; }
-  .library-entry-flash { animation-duration: .01ms; }
 }
 
 /* Desktop density and display type reset: the site is composed at 90% browser-scale,

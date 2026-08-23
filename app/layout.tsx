@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { withSiteBasePath } from "../lib/site-path";
+import { ResourcePreloader } from "../components/resource-preloader";
 
 export const metadata: Metadata = {
   title: "METC — Math and Engineering Teaching Club",
@@ -17,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body><ResourcePreloader />{children}</body>
     </html>
   );
 }

@@ -18,9 +18,6 @@ export function MetcHomePage() {
   const [language, setLanguage] = useState<Language>("en");
   const [languageReady, setLanguageReady] = useState(false);
   const [noticeVisible, setNoticeVisible] = useState(false);
-  const [libraryTransition, setLibraryTransition] = useState(false);
-  const [galleryTransition, setGalleryTransition] = useState(false);
-  const [voicesTransition, setVoicesTransition] = useState(false);
 
   useEffect(() => {
     const savedLanguage = window.localStorage.getItem(LANGUAGE_STORAGE_KEY);
@@ -74,24 +71,18 @@ export function MetcHomePage() {
   }
 
   function enterLibrary() {
-    if (libraryTransition) return;
-    setLibraryTransition(true);
     window.sessionStorage.setItem("metc-library-entry", "flash");
-    window.setTimeout(() => router.push("/teaching", { scroll: true }), 340);
+    router.push("/teaching", { scroll: true });
   }
 
   function enterGallery() {
-    if (galleryTransition) return;
-    setGalleryTransition(true);
     window.sessionStorage.setItem("metc-gallery-entry", "flash");
-    window.setTimeout(() => router.push("/activities", { scroll: true }), 340);
+    router.push("/activities", { scroll: true });
   }
 
   function enterVoices() {
-    if (voicesTransition) return;
-    setVoicesTransition(true);
     window.sessionStorage.setItem("metc-voices-entry", "flash");
-    window.setTimeout(() => router.push("/voices", { scroll: true }), 340);
+    router.push("/voices", { scroll: true });
   }
 
   return (
@@ -119,7 +110,6 @@ export function MetcHomePage() {
       <div className={`site-notice${noticeVisible ? " show" : ""}`} role="status" aria-live="polite">
         {homepageCopy[language].noticeMessage}
       </div>
-      {(libraryTransition || galleryTransition || voicesTransition) && <div className="library-entry-flash" aria-hidden="true" />}
     </>
   );
 }
