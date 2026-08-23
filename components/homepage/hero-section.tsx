@@ -132,6 +132,49 @@ export function HeroSection({ language, onAnchorClick }: HeroSectionProps) {
           <text className="economy-label" x="111" y="55">PAY</text>
           <text className="economy-label" x="153" y="103">MARKET</text>
         </svg>
+        <svg className="hero-illustration hero-linear-function" viewBox="0 0 230 150">
+          <path className="graph-grid" d="M34 19v112M66 19v112M98 19v112M130 19v112M162 19v112M194 19v112M20 35h190M20 67h190M20 99h190M20 131h190" />
+          <path className="graph-axis" d="M20 115h194M50 137V13" />
+          <path className="graph-axis-head" d="m207 109 8 6-8 6M44 20l6-8 6 8" />
+          <path className="graph-line" d="M27 129 185 22" />
+          <circle className="graph-point" cx="66" cy="103" r="4" />
+          <circle className="graph-point" cx="114" cy="70" r="4" />
+          <circle className="graph-point" cx="162" cy="38" r="4" />
+          <path className="graph-rise-run" d="M66 103h48V70" />
+          <text className="graph-delta" x="80" y="114">Δx</text>
+          <text className="graph-delta" x="118" y="91">Δy</text>
+          <text className="graph-equation" x="125" y="139">y = 2x + 1</text>
+          <text className="graph-caption" x="19" y="148">LINEAR FUNCTION</text>
+        </svg>
+        <svg className="hero-illustration hero-newton-first" viewBox="0 0 240 128">
+          <path className="law-ground" d="M15 99h210M25 105h190" />
+          <path className="law-motion-trail" d="M18 61h40M27 72h29M38 83h20" />
+          <path className="law-cart law-cart-blue" d="M66 55h92v40H66z" />
+          <path className="law-cart-top" d="M78 44h68l12 11H66z" />
+          <circle className="law-wheel" cx="86" cy="102" r="9" />
+          <circle className="law-wheel" cx="140" cy="102" r="9" />
+          <path className="law-vector" d="M163 65h58" />
+          <path className="law-vector-head" d="m213 58 9 7-9 7" />
+          <text className="law-vector-label" x="180" y="55">v = constant</text>
+          <text className="law-formula" x="82" y="80">ΣF = 0</text>
+          <text className="law-caption" x="18" y="126">NEWTON I · INERTIA</text>
+        </svg>
+        <svg className="hero-illustration hero-newton-second" viewBox="0 0 240 132">
+          <path className="law-ground" d="M17 104h207M28 110h185" />
+          <path className="law-cart law-cart-sun" d="M57 60h82v39H57z" />
+          <path className="law-cart-top" d="M69 49h58l12 11H57z" />
+          <circle className="law-wheel" cx="76" cy="106" r="9" />
+          <circle className="law-wheel" cx="123" cy="106" r="9" />
+          <path className="law-vector law-vector-force" d="M140 77h78" />
+          <path className="law-vector-head law-vector-force" d="m209 69 10 8-10 8" />
+          <path className="law-vector law-vector-acceleration" d="M102 37h61" />
+          <path className="law-vector-head law-vector-acceleration" d="m154 30 10 7-10 7" />
+          <text className="law-vector-label law-force-label" x="174" y="68">F</text>
+          <text className="law-vector-label" x="125" y="28">a</text>
+          <text className="law-mass" x="88" y="85">m</text>
+          <text className="law-formula" x="151" y="103">F = ma</text>
+          <text className="law-caption" x="17" y="130">NEWTON II · ACCELERATION</text>
+        </svg>
         <svg className="hero-illustration hero-supplies" viewBox="0 0 300 76">
           <path className="supply-rule" d="M15 45 154 14l5 22-139 31z" />
           <path className="supply-tick" d="m36 43 4 16m20-21 4 16m20-21 4 16m20-21 4 16m20-21 4 16m20-21 4 16" />

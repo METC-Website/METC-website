@@ -299,6 +299,22 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .hero-illustration .economy-caption { fill: var(--ink); font-family: var(--accent); font-size: 10px; font-weight: 700; letter-spacing: .09em; }.hero-illustration .economy-label { fill: rgba(25,55,47,.72); font-family: var(--accent); font-size: 7px; font-weight: 700; letter-spacing: .08em; }
 .hero-illustration .note-dash { fill: none; stroke: rgba(25,55,47,.26); stroke-width: 1.5; stroke-dasharray: 2 5; stroke-linecap: round; }.hero-illustration .note-paper { stroke: var(--ink); stroke-width: 1.7; stroke-linejoin: round; }.hero-illustration .note-paper-blue { fill: #a9d2df; }.hero-illustration .note-paper-sun { fill: #f7d96f; }.hero-illustration .note-paper-coral { fill: #f3b29e; }.hero-illustration .note-pin { fill: var(--coral); stroke: var(--ink); stroke-width: 1.2; }.hero-illustration .note-star, .hero-illustration .note-check, .hero-illustration .note-orbit { fill: none; stroke: var(--ink); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }.hero-illustration .note-text { fill: rgba(25,55,47,.68); font-family: var(--accent); font-size: 7px; font-weight: 700; letter-spacing: .08em; }
 .hero-illustration .supply-rule { fill: rgba(243,200,79,.74); stroke: var(--ink); stroke-width: 2; stroke-linejoin: round; }.hero-illustration .supply-tick, .hero-illustration .supply-paperclip { fill: none; stroke: rgba(25,55,47,.65); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }.hero-illustration .supply-spark { fill: none; stroke: #8ebdd0; stroke-width: 3; stroke-linecap: round; }
+.hero-illustration .graph-grid { fill: none; stroke: rgba(25,55,47,.15); stroke-width: 1; }
+.hero-illustration .graph-axis, .hero-illustration .graph-axis-head { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.hero-illustration .graph-line { fill: none; stroke: var(--coral); stroke-width: 3.2; stroke-linecap: round; }
+.hero-illustration .graph-point { fill: var(--sun); stroke: var(--ink); stroke-width: 1.7; }
+.hero-illustration .graph-rise-run { fill: none; stroke: #4d8599; stroke-width: 2; stroke-dasharray: 4 3; stroke-linecap: round; }
+.hero-illustration .graph-delta, .hero-illustration .graph-equation, .hero-illustration .graph-caption { fill: rgba(25,55,47,.72); font-family: var(--accent); font-weight: 700; }
+.hero-illustration .graph-delta { font-size: 8px; }.hero-illustration .graph-equation { fill: #c6654d; font-size: 10px; }.hero-illustration .graph-caption { font-size: 7px; letter-spacing: .08em; }
+.hero-illustration .law-ground { fill: none; stroke: rgba(25,55,47,.25); stroke-width: 2; stroke-linecap: round; }
+.hero-illustration .law-motion-trail { fill: none; stroke: #8ebdd0; stroke-width: 2.2; stroke-dasharray: 5 4; stroke-linecap: round; }
+.hero-illustration .law-cart, .hero-illustration .law-cart-top { stroke: var(--ink); stroke-width: 2.2; stroke-linejoin: round; }
+.hero-illustration .law-cart-blue { fill: #9fcede; }.hero-illustration .law-cart-sun { fill: #f7d96f; }.hero-illustration .law-cart-top { fill: #fffaf0; }
+.hero-illustration .law-wheel { fill: #31584c; stroke: #fffaf0; stroke-width: 2; }
+.hero-illustration .law-vector, .hero-illustration .law-vector-head { fill: none; stroke: #31584c; stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; }
+.hero-illustration .law-vector-force { stroke: var(--coral); stroke-width: 3.3; }.hero-illustration .law-vector-acceleration { stroke: #4d8599; }
+.hero-illustration .law-vector-label, .hero-illustration .law-mass, .hero-illustration .law-formula, .hero-illustration .law-caption { fill: rgba(25,55,47,.76); font-family: var(--accent); font-weight: 700; }
+.hero-illustration .law-vector-label { font-size: 8px; }.hero-illustration .law-force-label { fill: #c6654d; font-size: 11px; }.hero-illustration .law-mass { font-size: 13px; }.hero-illustration .law-formula { fill: var(--ink); font-size: 11px; }.hero-illustration .law-caption { font-size: 7px; letter-spacing: .08em; }
 .hero-inner { width: min(1360px, 100%); margin: 0 auto; display: flex; flex-direction: column; justify-content: center; }
 .hero-eyebrow { color: var(--ink); margin-left: 6px; font-family: var(--display); font-size: clamp(.95rem, 1.25vw, 1.16rem); font-weight: 600; letter-spacing: .005em; text-transform: none; }
 .hero-logo-stage { position: relative; width: min(720px, 66vw); margin: clamp(4px, 1.5vh, 16px) 0 clamp(14px, 2vh, 26px); }
@@ -1485,4 +1501,48 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .rocket-sketch { display: block; margin-top: 7px; }
   .rocket-sketch svg { max-height: 92px; }
   .rocket-sketch > span { font-size: .52rem; }
+}
+
+/* Hero lesson-map density: eleven sketches share a compact three-row field.
+   The reading column remains calm while the right side feels like a filled
+   teaching notebook rather than a collection of isolated floating marks. */
+@media (min-width: 1101px) {
+  .hero-cell { top: 25%; left: 37%; width: min(105px, 8.2vw); }
+  .hero-linear-function { top: 24%; left: 47%; width: min(115px, 7.8vw); }
+  .hero-note-strip { top: 24%; left: 59%; width: min(140px, 10.9vw); }
+  .hero-books { top: 20%; left: 72%; right: auto; width: min(180px, 14.1vw); }
+
+  .hero-newton-first { top: 55%; left: 42%; width: min(110px, 7.5vw); }
+  .hero-bridge-lab { top: 55%; left: 52%; width: min(150px, 11.7vw); }
+  .hero-newton-second { top: 55%; left: 70%; width: min(110px, 7.5vw); }
+  .hero-rocket { top: 57%; left: 85%; right: auto; width: min(80px, 6.25vw); }
+
+  .hero-supplies { bottom: 4%; left: 38%; width: min(125px, 9.8vw); }
+  .hero-economy { bottom: 3%; left: 51%; width: min(108px, 8.45vw); }
+  .hero-optics { top: auto; right: auto; bottom: 4%; left: 65%; width: min(105px, 8.2vw); }
+}
+
+@media (min-width: 761px) and (max-width: 1100px) {
+  .hero-graphic-set { opacity: .38; }
+  .hero-cell { top: 16%; left: 47%; width: min(105px, 10vw); }
+  .hero-linear-function { top: 15%; left: 59%; width: min(120px, 12vw); }
+  .hero-note-strip { top: 30%; left: 54%; width: min(130px, 13vw); }
+  .hero-books { top: 13%; left: auto; right: 1%; width: min(175px, 17vw); }
+
+  .hero-newton-first { top: 46%; left: 48%; width: min(112px, 11vw); }
+  .hero-bridge-lab { top: 43%; left: 63%; width: min(160px, 16vw); }
+  .hero-newton-second { top: 63%; left: auto; right: 5%; width: min(112px, 11vw); }
+  .hero-rocket { top: 42%; left: auto; right: 2%; width: min(82px, 8vw); }
+
+  .hero-supplies { bottom: 11%; left: 46%; width: min(130px, 13vw); }
+  .hero-economy { bottom: 9%; left: 60%; width: min(112px, 11vw); }
+  .hero-optics { top: auto; left: auto; right: 4%; bottom: 9%; width: min(110px, 11vw); }
+}
+
+.hero-linear-function { --illustration-delay: .26s; }
+.hero-newton-first { --illustration-delay: .48s; }
+.hero-newton-second { --illustration-delay: .6s; }
+
+@media (max-width: 760px) {
+  .hero-linear-function, .hero-newton-first, .hero-newton-second { display: none; }
 }
