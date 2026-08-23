@@ -1,5 +1,4 @@
 public/resources/
-resources/
 output/
 .playwright-cli/
 .env*
