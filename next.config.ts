@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const siteBasePath = process.env.NEXT_PUBLIC_BASE_PATH?.trim().replace(/\/+$/, "") || "";
 
 const nextConfig: NextConfig = {
-  // Vercel 静态部署
+  // Vercel is the only deployment target; it serves the static export.
   output: "export",
 
   // 允许本地开发来源
@@ -14,8 +14,8 @@ const nextConfig: NextConfig = {
     root: process.cwd(),
   },
 
-  // Vercel 静态部署关闭图片优化
-  // 因为 export 模式不支持 Next Image Server Optimization
+  // Static export does not provide the Next Image optimization server.
+  // Public display images are optimized before upload and served from R2.
   images: {
     unoptimized: true,
   },

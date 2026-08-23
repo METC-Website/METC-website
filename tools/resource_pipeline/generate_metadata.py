@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -16,7 +17,7 @@ except ImportError:  # The index remains useful even without optional image dime
     Image = None
 
 ROOT = Path(__file__).resolve().parents[2]
-METC = ROOT / "resources" / "METC"
+METC = Path(os.environ.get("METC_RESOURCE_ROOT", ROOT / "resources" / "METC"))
 COURSES = METC / "课程设计"
 EXHIBITION = METC / "活动成果展览"
 GENERATED = ROOT / "src" / "data" / "resources" / "generated"
@@ -29,7 +30,7 @@ WEBP_PILOT_ALBUMS: set[str] = set()
 
 
 def url_for(path: Path) -> str:
-    return "/METC-website/" + quote(path.relative_to(ROOT).as_posix(), safe="/")
+    return "/METC-website/resources/METC/" + quote(path.relative_to(METC).as_posix(), safe="/")
 
 
 def identifier(label: str, prefix: str) -> str:
@@ -83,7 +84,7 @@ def web_photo(path: Path, album_root: Path) -> Path | None:
         return path
     sips = shutil.which("sips")
     if not sips:
-        print(f"Skipping HEIC without macOS sips: {path.relative_to(ROOT)}")
+        print(f"Skipping HEIC without macOS sips: {path.relative_to(METC)}")
         return None
     destination = album_root / "demonstration" / f"{hashlib.sha1(path.relative_to(album_root).as_posix().encode()).hexdigest()[:12]}.jpg"
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -118,10 +119,18 @@ def build_courses() -> list[dict]:
         config = read_json(course_dir / "course.config.json")
         demonstration = course_dir / "demonstration"
         syllabus: dict[str, str | None] = {"zh": None, "en": None}
+        syllabus_assets: dict[str, list[str]] = {"zh": [], "en": []}
         for language in syllabus:
             syllabus_file = demonstration / f"syllabus.{language}.html"
             if syllabus_file.exists():
                 syllabus[language] = url_for(syllabus_file)
+            assets = demonstration / f"syllabus.{language}-assets"
+            if assets.exists():
+                syllabus_assets[language] = [
+                    url_for(asset)
+                    for asset in sorted(assets.iterdir())
+                    if asset.is_file() and asset.suffix.lower() in MEDIA_EXTENSIONS | {".svg"}
+                ]
         # Keep existing single-language courses working until their next DOCX conversion.
         legacy_syllabus = demonstration / "syllabus.html"
         if legacy_syllabus.exists() and not syllabus["zh"]:
@@ -159,6 +168,7 @@ def build_courses() -> list[dict]:
             "contains": localized_list(config.get("contains", [])),
             "hasSyllabus": any(syllabus.values()),
             "syllabus": syllabus,
+            "syllabusAssets": syllabus_assets,
             "syllabusSource": syllabus_sources,
             "lessons": decks
         }

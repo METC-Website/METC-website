@@ -6,7 +6,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "next typegen && tsc --noEmit"
+    "typecheck": "next typegen && tsc --noEmit",
+    "resources:feedback": "python3 tools/resource_pipeline/generate_student_feedback.py",
+    "r2:check": "node --env-file-if-exists=.env.worker.local tools/resource_pipeline/r2_sync.mjs --check-access",
+    "r2:preflight": "node --env-file-if-exists=.env.worker.local tools/resource_pipeline/r2_sync.mjs --preflight-upload",
+    "r2:verify-write": "node --env-file-if-exists=.env.worker.local tools/resource_pipeline/r2_sync.mjs --verify-write",
+    "r2:verify-object": "node --env-file-if-exists=.env.worker.local tools/resource_pipeline/r2_sync.mjs --verify-object",
+    "r2:upload": "node --env-file-if-exists=.env.worker.local tools/resource_pipeline/r2_sync.mjs --upload-file",
+    "r2:preflight-feedback": "node --env-file-if-exists=.env.worker.local tools/resource_pipeline/r2_sync.mjs --preflight-feedback",
+    "r2:upload-feedback": "node --env-file-if-exists=.env.worker.local tools/resource_pipeline/r2_sync.mjs --upload-feedback",
+    "r2:verify-feedback": "node --env-file-if-exists=.env.worker.local tools/resource_pipeline/r2_sync.mjs --verify-public",
+    "r2:verify-cache": "node --env-file-if-exists=.env.worker.local tools/resource_pipeline/r2_sync.mjs --verify-cache"
   },
   "dependencies": {
     "next": "^16.2.10",

@@ -1,0 +1,15 @@
+{
+  "items": [
+    {
+      "id": "feedback-001",
+      "source": "source/feedback-001.jpg",
+      "approvedForPublicUse": true,
+      "imageAlt": {
+        "zh": "学生对课程的手写反馈",
+        "en": "A student's handwritten course reflection"
+      },
+      "accent": "coral",
+      "variant": "envelope"
+    }
+  ]
+}

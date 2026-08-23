@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import html
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -14,7 +15,8 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[2]
-COURSES = ROOT / "resources" / "METC" / "课程设计"
+METC = Path(os.environ.get("METC_RESOURCE_ROOT", ROOT / "resources" / "METC"))
+COURSES = METC / "课程设计"
 ALLOWED = {"h1", "h2", "h3", "h4", "h5", "h6", "p", "br", "strong", "b", "em", "i", "u", "span", "div", "ul", "ol", "li", "table", "thead", "tbody", "tr", "td", "th", "img", "a", "blockquote"}
 VOID = {"br", "img"}
 
@@ -49,6 +51,7 @@ class Sanitiser(HTMLParser):
             if source and (self.assets / source).exists():
                 safe.append(f' src="{self.asset_prefix}/{html.escape(source, quote=True)}"')
                 safe.append(f' alt="{html.escape(values.get("alt") or "课程大纲图片", quote=True)}"')
+                safe.append(' loading="eager" decoding="async"')
             else:
                 return
         self.parts.append(f"<{tag}{''.join(safe)}>")
@@ -127,7 +130,7 @@ def main() -> None:
             destination.mkdir(parents=True, exist_ok=True)
             convert(source, destination, language)
             converted += 1
-            print(f"DOCX  {source.relative_to(ROOT)} -> {destination.relative_to(ROOT) / f'syllabus.{language}.html'}")
+            print(f"DOCX  {source.relative_to(METC)} -> {destination.relative_to(METC) / f'syllabus.{language}.html'}")
     print(f"Converted {converted} syllabus document(s).")
 
 

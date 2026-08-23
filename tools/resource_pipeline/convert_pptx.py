@@ -12,7 +12,8 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-COURSES = ROOT / "resources" / "METC" / "课程设计"
+METC = Path(os.environ.get("METC_RESOURCE_ROOT", ROOT / "resources" / "METC"))
+COURSES = METC / "课程设计"
 PRESENTATIONS = {".pptx", ".ppt", ".pdf"}
 
 
@@ -79,7 +80,7 @@ def main() -> None:
         for index, source in enumerate(source_files, start=1):
             data = convert(source, course / "demonstration", index)
             converted += 1
-            print(f"PPT  {source.relative_to(ROOT)} -> {course.name}/demonstration/{data['id']} ({data['slideCount']} slides)")
+            print(f"PPT  {source.relative_to(METC)} -> {course.name}/demonstration/{data['id']} ({data['slideCount']} slides)")
     print(f"Converted {converted} presentation(s).")
 
 

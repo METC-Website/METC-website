@@ -13,6 +13,19 @@ dist/
 coverage/
 output/
 *.log
+__pycache__/
+*.pyc
+
+# Local environment files. Only the redacted example is versioned.
+.env
+.env.local
+.env.*.local
+.env.worker.local
+!.env.example
+
+# Private source material and the retired in-repository public resource tree.
+/resources/
+/public/resources/
 
 # This repository uses pnpm; its lockfile is tracked.
 # Avoid introducing lockfiles from other package managers.
