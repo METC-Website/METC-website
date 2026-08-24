@@ -1,36 +1,37 @@
-# Vercel 部署指南
+# Vercel 部署
 
-Vercel 是本项目唯一的部署目标。项目使用 Next.js `output: "export"`，`pnpm build` 生成 `out/`，Vercel 配置见根目录 `vercel.json`。
+本项目是 Next.js 静态导出站点：`pnpm build` 运行 `next build`，由 `output: "export"` 生成静态文件。Vercel 是唯一部署目标。
 
-## 部署边界
+## 项目设置
 
-- GitHub Pages 工作流已移除，不再创建 Pages artifact 或 deployment。
-- Vercel 只部署应用代码、生成索引与 `public/images` 中少量站点外壳资源。
-- 课程、课件、活动照片与正式 Student Voice 图片从 Cloudflare R2 公共展示目录读取；`resources/` 与旧 `public/resources/` 不进入 Vercel 上传内容。
-- 生产部署使用域名根路径，不再依赖 `/METC-website`。资源索引中的历史前缀会由 `lib/site-path.ts` 兼容移除。
-
-## Vercel 项目要求
-
-GitHub 仓库只应连接一个正式 Vercel Project。项目设置必须为：
+一个正式 Vercel Project 应连接此仓库，并使用：
 
 | 设置 | 值 |
 | --- | --- |
-| Framework | Next.js |
+| Framework Preset | Next.js（自动检测） |
+| Root Directory | 仓库根目录 `.` |
+| Node.js | 24.x |
+| Package Manager | pnpm 10.33.0（由 `packageManager` 声明） |
 | Install Command | `pnpm install --frozen-lockfile` |
 | Build Command | `pnpm build` |
-| Output Directory | `out` |
+| Output Directory | **留空，不配置** |
 | Production Branch | `main` |
-| `NEXT_PUBLIC_RESOURCE_BASE_URL` | `https://assets.sciemetc.com` |
 
-不要在 Vercel 中配置 `CF_ACCESS_CLIENT_ID`、`CF_ACCESS_CLIENT_SECRET`、Worker 写入地址或任何 R2 写入密钥；生成与上传资源只在受控本地维护环境执行。
+不要在 `vercel.json` 或控制台覆盖 Output Directory。Next.js 适配器会自动处理静态导出；强制设为 `out` 会导致 `Routes Manifest Could Not Be Found`。
+
+## 资源与环境变量
+
+- `public/resources/`、本地 `output/` 和 `.env*` 被 `.vercelignore` 排除。
+- 课程、活动和 Student Voice 展示资源从 `https://assets.sciemetc.com` 加载。
+- `NEXT_PUBLIC_RESOURCE_BASE_URL` 可选；未设置时使用上述安全默认值。
+- 绝不在 Vercel 配置 `CF_ACCESS_CLIENT_ID`、`CF_ACCESS_CLIENT_SECRET`、R2 写入密钥或上传 Worker 管理凭证。
 
 ## 发布流程
 
-1. 先生成、上传并通过公共 HEAD 请求验证 R2 对象。
-2. 执行 `pnpm r2:verify-cache`、`pnpm typecheck` 与 `pnpm build`。
-3. 在功能分支检查 Preview Deployment。
-4. 合并至 `main`，由唯一的 Vercel Project 创建 Production Deployment。
-5. 在线验证 `/`、`/teaching`、`/activities`、`/voices` 及 R2 图片。
-6. 在同一浏览器页面会话中连续切换主要路由，确认 R2 URL 无重复预热、后台并发不超过 3、当前路由资源先于跨页资源，且切到后台时 Student Voice 动画暂停。
+1. 在分支运行 `pnpm install --frozen-lockfile`、`pnpm typecheck`、`pnpm build`。
+2. 如包含资源更新，先完成 [资源运维](RESOURCE_OPERATIONS.md)中的生成、R2 校验和浏览器验证。
+3. 检查 Vercel Preview：`/`、`/teaching`、`/activities`、`/voices` 与代表性 R2 资源。
+4. 合并到 `main` 后由正式 Project 创建生产部署。
+5. 发布后确认根路径无 `/METC-website` 前缀，二维码状态正确，且 R2 资源可访问。
 
-如果 GitHub Deployments 中出现多个 Vercel Production 环境，应在 Vercel 控制台解除旧 Project 与本仓库的连接，只保留正式 Project。
+若仓库连接了历史 Vercel 项目，请先确认其域名和生产分支，再在控制台解除重复连接；不要误删正式项目。

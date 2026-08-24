@@ -1,42 +1,41 @@
 # 资源系统架构
 
-## 唯一公开资源源
+## 运行时模型
 
-Cloudflare R2 公共展示目录是课程、课件、活动照片和正式 Student Voice 图片的唯一运行时资源源。Git 仓库只保存应用代码、人工配置和生成索引，不再把大型展示资源打包进 Vercel。
+课程、课件、活动照片和 Student Voice 的公开展示物只从 Cloudflare R2 读取；Vercel 只提供静态前端和少量站点外壳图片。
 
 ```text
-私有、已授权源文件
-        ↓ 本地资源处理脚本
-WebP / HTML / PDF / PNG 展示物
-        ↓ 本地预检 + Cloudflare Access Service Token
+已授权源文件（仓库中的 public/resources/METC）
+        ↓ 本地转换与索引生成
+展示物 + src/data/resources/generated/*.json
+        ↓ Access Service Token
 upload.sciemetc.com（受保护 Worker）
-        ↓ METC_BUCKET binding
+        ↓
 R2: resources/METC/**
-        ↓ assets.sciemetc.com 公共 GET/HEAD
-generated/*.json + withResourceBaseUrl()
+        ↓ 公开 GET/HEAD
+assets.sciemetc.com
+        ↓
 Vercel 静态前端
 ```
 
-浏览器和 Vercel 只读取 `assets.sciemetc.com`，绝不持有上传凭证。维护者不直连 R2 S3 API；Worker 是唯一写入入口，并通过 Cloudflare Access Service Token 区分和撤销个人上传权限。
+`lib/site-path.ts` 将生成清单中遗留的 `/resources/` 路径转换到公开 R2 域名，并移除历史 GitHub Pages 前缀。`NEXT_PUBLIC_RESOURCE_BASE_URL` 未设置时回退到 `https://assets.sciemetc.com`。
 
-## R2 分类
+## 仓库边界
 
-```text
-resources/METC/
-├── 课程设计/<课程>/demonstration/       syllabus、课件 PDF、页面 PNG
-├── 活动成果展览/<学校>/demonstration/   WebP/JPEG 展示照片
-└── 听ta们说/demonstration/              Student Voice WebP（扁平目录）
-```
+| 位置 | 职责 |
+| --- | --- |
+| `public/resources/METC/` | 已授权源文件、配置和生成展示物；由 Vercel 忽略 |
+| `src/data/resources/generated/` | 课程、相册、反馈与二维码的前端清单；必须进入构建 |
+| `public/images/` | Logo、二维码等少量随站点发布的应用外壳资源 |
+| `tools/resource_pipeline/` | 本地转换、清单生成与 R2 上传脚本 |
 
-原始 DOCX、PPTX、未审核照片和含隐私的原图不是公开网站资源，不得上传到公共 R2 路径。只有已取得授权且通过隐私审核的源文件可以版本化保存于 `public/resources/METC`；未审核或敏感材料必须保存在仓库外的受控私有素材存储中。
+公开 R2 路径只接收 `demonstration/` 下的展示物。原始 DOCX、PPTX、未审核照片和含隐私原图不得上传到 R2；未审核或敏感素材必须留在受控的私有位置。
 
-## 索引和预加载
+## 安全边界
 
-- `src/data/resources/generated/courses.json`：课程、syllabus 与课件索引。
-- `src/data/resources/generated/albums.json`：活动相册与照片索引。
-- `src/data/resources/generated/feedbacks.json`：已授权 Student Voice 索引。
-- `components/resource-preloader.tsx`：用户进入任意页面后，使用会话级去重队列先加载当前路由关键资源；首帧空闲后以最多 3 个并发的低优先级 fetch 预热其余资源，路由切换只提升目标页面优先级；完整策略见 [分级加载与缓存](RESOURCE_LOADING_AND_CACHE.md)。
+- Worker 是唯一写入入口，维护者不使用 R2 S3 Access Key。
+- 浏览器、GitHub、Vercel 和生成清单都不得包含写入凭证。
+- `CF_ACCESS_CLIENT_ID` 与 `CF_ACCESS_CLIENT_SECRET` 仅存在于维护者本地、被忽略的环境文件。
+- R2 对象键以 `resources/` 开头；正式内容位于 `resources/METC/**/demonstration/`。
 
-`lib/site-path.ts` 只把 `/resources/` 路径映射到 R2；`public/images` 仅保留站点 Logo 等应用外壳资产。真实内容不得新增到 `public/images`。
-
-本地秘密保存在被 Git 忽略的 `.env.worker.local`，推荐让它指向仓库外、权限为 `600` 的个人凭证文件。唯一秘密字段为 `CF_ACCESS_CLIENT_ID` 和 `CF_ACCESS_CLIENT_SECRET`；它们不得进入脚本、提交、日志或 Vercel。
+具体内容发布流程见[资源运维](RESOURCE_OPERATIONS.md)，缓存与预热策略见[加载与缓存](RESOURCE_LOADING_AND_CACHE.md)。

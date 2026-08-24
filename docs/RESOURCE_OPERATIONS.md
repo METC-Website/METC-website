@@ -1,37 +1,97 @@
-# 公开资源维护规范
+# 资源运维
 
-公开展示资源统一发布到 Cloudflare R2；经审核的源文件、展示物和生成索引都保存在仓库。当前没有 CMS 或网页上传后台，资源维护通过版本控制文件完成。
+本文件是课程、相册、Student Voice 和微信群二维码的唯一维护流程。资源发布不通过 CMS 或浏览器上传；所有写入均从受控本地环境经 Cloudflare Access Worker 完成。
 
-## 分类
+## 发布前边界
 
-| 资源 | 仓库内输入目录 | R2 公开展示目录 |
-| --- | --- | --- |
-| Word syllabus | `课程设计/<课程>/source/` | `课程设计/<课程>/demonstration/syllabus.*` |
-| PPT/PDF 课件 | 同上 | `课程设计/<课程>/demonstration/lesson*/` |
-| 活动照片 | `活动成果展览/<学校>/` | `活动成果展览/<学校>/demonstration/` |
-| Student Voice | `听ta们说/source/` | `听ta们说/demonstration/` |
+1. 确认公开授权、隐私处理、双语文案和内容准确性。
+2. 已授权源文件可版本化保存在 `public/resources/METC/`；未审核或敏感文件不得提交。
+3. `source/` 只保存原始材料，永不上传 R2；只有 `demonstration/` 展示物可以发布。
+4. 不手工篡改生成清单或展示物。修改源文件/配置后运行生成脚本。
 
-以上路径均位于 `public/resources/METC`。`source/` 原始办公文件、未审核照片和敏感素材不得上传到 R2 公共展示目录；只有经审核的源文件允许提交到 Git。
+## 课程与活动
 
-## 更新规则
+输入与展示物均位于 `public/resources/METC/`：
 
-1. 完成授权、隐私和内容审核。
-2. 将已授权原始文件放入仓库内输入目录并维护配置 JSON。
-3. 运行对应生成脚本，检查 WebP/HTML/PNG 等展示物。
-4. 运行 Worker 上传器预检；全部对象通过后才允许上传。
-5. 通过 `upload.sciemetc.com` Worker 上传，再通过 `assets.sciemetc.com` 公共 URL 校验。
-6. 执行 `pnpm r2:verify-cache`，确认清单中的公开对象至少返回 24 小时公共缓存。缓存策略由 Worker/公开域名统一控制；本地工具不再直连 R2 修改 bucket 或对象元数据。
-7. 提交 `src/data/resources/generated/*.json`。
-8. 在 Vercel Preview 中检查页面后再合并 `main`。
+```text
+课程设计/<课程>/source/                 原始 DOCX、PPTX、PDF
+课程设计/<课程>/demonstration/          syllabus、预览 PDF、逐页 PNG
+活动成果展览/<学校>/                     原始照片与 album.config.json
+活动成果展览/<学校>/demonstration/       WebP/JPEG 展示照片
+```
 
-前端不依赖交互或视口进入才开始下载图片。当前页面关键资源立即加载；其余 URL 只加入一次会话级队列，在首帧空闲后由最多 3 个低优先级 `fetch` 预热 HTTP 缓存，不提前解码图片。pathname 改变只更新既有任务的优先级，不重建全站队列；详见 [分级加载与缓存](RESOURCE_LOADING_AND_CACHE.md)。
+相册配置使用 `album.config.json` 选择 `coverPhoto` 和 `homepageFeaturePhoto`。完成内容修改后运行：
 
-活动相册通过 `album.config.json` 选择 `coverPhoto` 和 `homepageFeaturePhoto`。Student Voice 使用 `feedback.config.json`，必须设置 `approvedForPublicUse: true`。
+```bash
+python3 tools/resource_pipeline/convert_docx.py
+python3 tools/resource_pipeline/convert_pptx.py
+python3 tools/resource_pipeline/generate_metadata.py
+```
 
-## 禁止事项
+这些脚本更新展示物以及 `courses.json`、`albums.json`。依赖为 Python 3、Pillow、LibreOffice、Poppler；HEIC 预览转换仅依赖 macOS `sips`。
 
-- 不将未审核、含敏感信息或未经授权的真实内容新增到 `public/resources`。
-- 不创建或分发 R2 S3 Access Key；上传只使用个人 Cloudflare Access Service Token。
-- 不将 Access Client Secret 或未审核源文件提交到 Git、日志或 Vercel。
-- 不直接手改 `demonstration/` 或生成索引。
-- 不在 R2 上传后遗漏 Content-Type、既定公共缓存头和公共访问验证。
+## Student Voice
+
+目录结构：
+
+```text
+听ta们说/
+├── feedback.config.json
+├── source/<feedback-id>.<ext>
+└── demonstration/<feedback-id>.webp
+```
+
+每项必须具有唯一小写 `id`、双语替代文本，并明确设置 `approvedForPublicUse: true`。生成器会校正方向、移除元数据、限制最长边为 2400px，以 WebP quality 82 输出，并更新 `feedbacks.json` 的内容哈希版本参数。
+
+```bash
+pnpm resources:feedback
+pnpm r2:preflight-feedback
+pnpm r2:upload-feedback
+pnpm r2:verify-feedback
+```
+
+发布后在 `/voices` 检查信封数量、清单条数和本次批准图片数一致，并确认没有旧 Demo 或敏感信息。
+
+## R2 上传与验证
+
+真实凭证只放在 `.env.worker.local`（建议链接到仓库外、权限为 `600` 的文件）：
+
+```dotenv
+CF_ACCESS_CLIENT_ID=
+CF_ACCESS_CLIENT_SECRET=
+R2_WORKER_UPLOAD_URL=https://upload.sciemetc.com
+NEXT_PUBLIC_RESOURCE_BASE_URL=https://assets.sciemetc.com
+```
+
+先验证访问权限，再对每个通用展示文件预检、上传和复核：
+
+```bash
+pnpm r2:check
+pnpm r2:preflight -- /absolute/path/to/display.webp 'resources/METC/.../demonstration/file.webp'
+pnpm r2:upload -- /absolute/path/to/display.webp 'resources/METC/.../demonstration/file.webp'
+pnpm r2:verify-object -- 'resources/METC/.../demonstration/file.webp' 'image/webp'
+pnpm r2:verify-cache
+```
+
+上传器只接受允许的展示 MIME、非空且不超过 100 MB 的文件；它验证对象键、凭证文件权限、受保护 Worker GET、公开域名 HEAD 和至少 24 小时的公共缓存。不要创建 R2 S3 密钥、打印 Client Secret，或直接修改 bucket 元数据。
+
+`pnpm r2:verify-write` 会写入 `resources/_admin-test/` 做运维验证，且不会自动删除测试对象；仅在明确需要测试写入能力时运行。
+
+## 微信群二维码
+
+二维码是随 Vercel 发布的 `public/images` 站点资源，不上传 R2。使用官方、获准公开的 JPG、PNG 或 WebP，文件不超过 10 MB：
+
+```bash
+pnpm contact:qr -- /absolute/path/to/qr.jpg
+pnpm contact:qr -- /absolute/path/to/qr.jpg --valid-days 10
+pnpm contact:qr -- /absolute/path/to/qr.jpg --expires-on 2026-08-30
+```
+
+命令更新 `public/images/contact/wechat-join-qr.*` 和 `src/data/resources/generated/contact-qr.json`。前端按 `Asia/Shanghai` 判断有效期；到期或加载失败时不显示二维码。发布前用手机实际扫码，并运行 `pnpm typecheck`、`pnpm build`。
+
+## 最终检查
+
+1. 提交已审核源文件、展示物、配置和生成清单；绝不提交凭证或未审核素材。
+2. 完成 `pnpm r2:verify-cache`、`pnpm typecheck` 和 `pnpm build`。
+3. 在 Vercel Preview 检查 `/`、`/teaching`、`/activities`、`/voices` 及代表性 R2 URL。
+4. 合并 `main` 后复核生产站点、缓存和二维码状态。
