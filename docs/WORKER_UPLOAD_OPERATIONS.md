@@ -27,7 +27,6 @@ CF_ACCESS_CLIENT_ID=
 CF_ACCESS_CLIENT_SECRET=
 R2_WORKER_UPLOAD_URL=https://upload.sciemetc.com
 NEXT_PUBLIC_RESOURCE_BASE_URL=https://assets.sciemetc.com
-METC_RESOURCE_ROOT=/absolute/path/to/resources/METC
 ```
 
 Client Secret 不得发送到聊天、写入脚本、提交到 Git、打印到日志或配置到 Vercel。上传器启动时会检查本地凭证目标文件没有 group/other 权限。

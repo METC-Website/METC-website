@@ -23,7 +23,7 @@ __pycache__/
 .env.worker.local
 !.env.example
 
-# Private source material and the retired in-repository public resource tree.
+# Unreviewed source material outside the repository and the Vercel-excluded resource tree.
 /resources/
 /public/resources/
 

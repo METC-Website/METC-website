@@ -63,7 +63,7 @@ pnpm r2:verify-feedback
 app/                    页面路由与页面级样式
 components/             页面与交互组件
 content/                人工维护的双语文案与正式资源映射
-私有 METC_RESOURCE_ROOT  已授权源文件及本地生成展示物
+public/resources/METC/   已授权源文件与展示物；不上传到 Vercel
 src/data/resources/     由资源脚本生成的前端索引
 tools/resource_pipeline/ 资源转换与元数据生成脚本
 public/images/          Logo 等站点外壳资源；真实内容不放在这里

@@ -1,6 +1,6 @@
 # 资源处理流程
 
-资源脚本从仓库根目录运行，输入根目录由 `METC_RESOURCE_ROOT` 指定。
+资源脚本从仓库根目录运行，输入根目录固定为 `public/resources/METC`；该目录随 Git 版本控制，但由 Vercel 上传忽略。
 
 ```bash
 python3 tools/resource_pipeline/convert_docx.py
@@ -44,12 +44,12 @@ pnpm r2:verify-cache
 
 `r2:verify-write` 会在 `resources/_admin-test/` 创建唯一文本对象并验证公开读取。上传器不会自动删除它；删除必须针对用户明确确认的完整对象键单独执行。`r2:verify-cache` 只读取公共响应头，不使用写入凭证，也不会修改历史对象。
 
-所有公开展示物先上传 R2，再提交引用它们的生成索引。Vercel 构建不运行资源转换，也不包含私有资源目录。
+所有公开展示物先上传 R2，再提交引用它们的生成索引。Vercel 构建不运行资源转换，也不包含 `public/resources/`。
 
-Student Voice 使用扁平路径 `听ta们说/source/<id>.<ext>` 与 `听ta们说/demonstration/<id>.webp`，清单不记录年份或学校分类。生成的 `imageSrc` 带有基于 WebP 内容的版本参数，允许同名 R2 对象更新后安全绕过旧浏览器缓存；上传对象键本身保持稳定。运行 `pnpm resources:feedback` 前必须通过当前 shell 提供 `METC_RESOURCE_ROOT`；Worker 命令则会从本地 `.env.worker.local` 加载同一字段。
+Student Voice 使用扁平路径 `public/resources/METC/听ta们说/source/<id>.<ext>` 与 `public/resources/METC/听ta们说/demonstration/<id>.webp`，清单不记录年份或学校分类。生成的 `imageSrc` 带有基于 WebP 内容的版本参数，允许同名 R2 对象更新后安全绕过旧浏览器缓存；上传对象键本身保持稳定。Worker 命令只从本地 `.env.worker.local` 读取上传凭证。
 
 ## 版本控制
 
-需要提交：配置模板、处理脚本、`src/data/resources/generated/*.json`。
+需要提交：`public/resources/METC/` 下经审核的源文件、展示物和配置模板、处理脚本、`src/data/resources/generated/*.json`。
 
-不得提交：私有源目录、`.env.worker.local`、真实 Access Client Secret、生成的展示图片、`out/`、`public/resources/`。
+不得提交：`.env.worker.local`、真实 Access Client Secret、未审核或含敏感信息的源文件、`out/`。

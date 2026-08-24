@@ -129,13 +129,7 @@ pnpm build
 
 公开图片、syllabus 和课件从 Cloudflare R2 加载。本地只需要仓库内的生成索引即可预览现有内容。
 
-更新资源时，在受控私有目录准备 `resources/METC`，并设置：
-
-```bash
-export METC_RESOURCE_ROOT=/absolute/path/to/resources/METC
-```
-
-生成展示物后先上传并验证 R2，再提交生成索引。不要创建 `public/resources` 软链接，也不要把私有源文件提交到仓库。详见 `docs/RESOURCE_SYSTEM_ARCHITECTURE.md`。
+更新资源时，直接在仓库的 `public/resources/METC` 中维护已授权源文件与展示物。生成展示物后先上传并验证 R2，再提交资源和生成索引。`public/resources/` 已由 `.vercelignore` 排除，不会被上传到 Vercel；`source/` 中的原件也不允许上传到 R2。详见 `docs/RESOURCE_SYSTEM_ARCHITECTURE.md`。
 
 需要上传权限的维护者从 `.env.example` 了解字段，但不得复制真实值进 Git。将个人 Access Service Token 保存在仓库外权限为 `600` 的文件，再创建被 Git 忽略的本地入口：
 
@@ -144,7 +138,7 @@ ln -s /absolute/path/to/protected/worker.env .env.worker.local
 pnpm r2:check
 ```
 
-本地文件只包含 `CF_ACCESS_CLIENT_ID`、`CF_ACCESS_CLIENT_SECRET`、Worker/公开域名和可选的 `METC_RESOURCE_ROOT`。不得把上传凭证配置到 Vercel。
+本地文件只包含 `CF_ACCESS_CLIENT_ID`、`CF_ACCESS_CLIENT_SECRET` 与 Worker/公开域名。不得把上传凭证配置到 Vercel。
 
 ---
 
