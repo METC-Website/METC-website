@@ -31,7 +31,7 @@ Build command: `pnpm build` (`next build`). Output mode: `output: "export"`. `ne
 - Known-good source revision verified: `522861a0260c5f07cd20cc54c8493c5cc947c30e` (`Use R2 for public resources and reduce Vercel output`). Its frozen install and build pass.
 - `080d8fb` is the current revision. Its only change is removing `resources/` from `.vercelignore`; it is not a locally reproducible build regression.
 - The prior GitHub-organization-private-repository/Hobby-plan blocker is historical only. Repository accessibility and Vercel account policy cannot be inspected without an authenticated Vercel project.
-- The former `public/resources -> ../resources` symlink is not present. In the commit tree, `public/resources/**` is a regular-file tree (mode `100644`), and the sparse local checkout intentionally leaves it unmaterialized.
+- The former `public/resources -> ../resources` symlink is not present. In the commit tree and working tree, `public/resources/**` is a regular-file tree (mode `100644`) that is deliberately excluded from Vercel uploads.
 
 No first bad commit can be isolated: both endpoints pass the only reproducible source-build gate.
 

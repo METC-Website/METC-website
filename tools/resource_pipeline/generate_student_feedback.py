@@ -5,7 +5,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 import re
 import shutil
 import subprocess
@@ -20,7 +19,7 @@ except ImportError:  # pragma: no cover - reported with a useful message at runt
     ImageOps = None
 
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_METC_ROOT = Path(os.environ.get("METC_RESOURCE_ROOT", ROOT / "resources" / "METC"))
+DEFAULT_METC_ROOT = ROOT / "public" / "resources" / "METC"
 GENERATED = ROOT / "src" / "data" / "resources" / "generated" / "feedbacks.json"
 ACCENTS = {"coral", "sun", "sky", "mint", "rose", "lavender"}
 ID_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 import re
 import shutil
 import subprocess
@@ -17,7 +16,7 @@ except ImportError:  # The index remains useful even without optional image dime
     Image = None
 
 ROOT = Path(__file__).resolve().parents[2]
-METC = Path(os.environ.get("METC_RESOURCE_ROOT", ROOT / "resources" / "METC"))
+METC = ROOT / "public" / "resources" / "METC"
 COURSES = METC / "课程设计"
 EXHIBITION = METC / "活动成果展览"
 GENERATED = ROOT / "src" / "data" / "resources" / "generated"

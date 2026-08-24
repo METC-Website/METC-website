@@ -15,7 +15,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[2]
-METC = Path(os.environ.get("METC_RESOURCE_ROOT", ROOT / "resources" / "METC"))
+METC = ROOT / "public" / "resources" / "METC"
 COURSES = METC / "课程设计"
 ALLOWED = {"h1", "h2", "h3", "h4", "h5", "h6", "p", "br", "strong", "b", "em", "i", "u", "span", "div", "ul", "ol", "li", "table", "thead", "tbody", "tr", "td", "th", "img", "a", "blockquote"}
 VOID = {"br", "img"}

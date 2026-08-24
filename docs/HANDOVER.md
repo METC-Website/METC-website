@@ -1,6 +1,6 @@
 # METC 网站交接总览
 
-本文件是下一位技术负责人接手仓库的起点。代码、文档和生成索引位于仓库；私有源文件由项目方受控保存，公开展示物位于 R2。
+本文件是下一位技术负责人接手仓库的起点。代码、经审核的资源源文件、展示物与生成索引位于仓库；公开展示物位于 R2。
 
 ## 当前交付状态
 
@@ -22,14 +22,14 @@
 app/                            路由、全局与页面级 CSS
 components/                     页面可复用组件
 content/                        人工维护的双语内容和正式资源映射
-私有 METC_RESOURCE_ROOT         已授权源文件与本地展示物
+public/resources/METC/          已授权源文件与展示物；由 Vercel 忽略
 src/data/resources/generated/   课程、相册、Student Voice 前端索引
 tools/resource_pipeline/        资源转换和索引生成脚本
 public/images/                  Logo 等站点外壳静态资产
 docs/                            全部维护、运维和交接文档
 ```
 
-私有 `source/` 中的原始教学文件必须保留，不允许由脚本覆盖。公开 `demonstration/` 上传 R2；仓库只提交 `src/data/resources/generated/` 索引。
+`public/resources/METC/**/source/` 中的已授权原始教学文件必须保留，不允许由脚本覆盖。只有 `demonstration/` 中的展示物可上传 R2；`source/` 原件永不上传 R2 或 Vercel。仓库同时提交资源文件与 `src/data/resources/generated/` 索引。
 
 ## 交接后先做什么
 

@@ -6,12 +6,12 @@
 
 1. 取得学校、监护人和项目规范要求的公开授权。
 2. 移除姓名、学号、电话、地址、聊天头像等敏感信息。
-3. 未审核原图只保存在私有素材库；公共 R2 只接收审核通过、去元数据后的 WebP。
+3. 只有审核通过的原图可以提交到 `public/resources/METC/听ta们说/source/`；公共 R2 只接收对应的去元数据 WebP。
 4. 每条反馈须确认双语替代文本和展示顺序；不按年份或学校建立子目录。
 
-## 私有工作目录
+## 仓库内工作目录
 
-环境变量 `METC_RESOURCE_ROOT` 指向私有 `resources/METC` 目录：
+资源目录固定在仓库的 `public/resources/METC`：
 
 ```text
 听ta们说/
@@ -35,7 +35,7 @@ pnpm typecheck
 pnpm build
 ```
 
-生成脚本会校验授权字段和文件类型、应用 EXIF 方向、限制长边为 2400px、去除原始元数据，并以 WebP quality 82 输出。前端清单写入 `src/data/resources/generated/feedbacks.json`，其中 `imageSrc` 自动附加由 WebP 内容生成的短 SHA-256 版本参数；覆盖同名 R2 对象后，浏览器会立即请求新版本，而不会复用含旧内容的缓存。只提交该清单，不提交私有原图或生成图片。
+生成脚本会校验授权字段和文件类型、应用 EXIF 方向、限制长边为 2400px、去除原始元数据，并以 WebP quality 82 输出。前端清单写入 `src/data/resources/generated/feedbacks.json`，其中 `imageSrc` 自动附加由 WebP 内容生成的短 SHA-256 版本参数；覆盖同名 R2 对象后，浏览器会立即请求新版本，而不会复用含旧内容的缓存。提交已审核原图、生成图片与该清单；`.vercelignore` 会阻止整份 `public/resources/` 上传到 Vercel。
 
 上传脚本为每张图提供并验证：
 
@@ -56,7 +56,6 @@ CF_ACCESS_CLIENT_ID
 CF_ACCESS_CLIENT_SECRET
 R2_WORKER_UPLOAD_URL
 NEXT_PUBLIC_RESOURCE_BASE_URL
-METC_RESOURCE_ROOT
 ```
 
 Access Service Token 必须属于保护 `upload.sciemetc.com` 的同一 Zero Trust Account，并被对应 Service Auth Policy 接受。不要在聊天、Git、脚本、日志、前端变量或 Vercel 中暴露 Client Secret；不要为本地维护者创建 R2 S3 密钥。

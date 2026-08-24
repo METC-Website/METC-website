@@ -12,7 +12,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-METC = Path(os.environ.get("METC_RESOURCE_ROOT", ROOT / "resources" / "METC"))
+METC = ROOT / "public" / "resources" / "METC"
 COURSES = METC / "课程设计"
 PRESENTATIONS = {".pptx", ".ppt", ".pdf"}
 
