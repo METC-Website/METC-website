@@ -15,11 +15,11 @@ export function ExploreSection({ language }: ExploreSectionProps) {
             <p className="section-eyebrow">{explore.eyebrow}</p>
             <CommunityActions language={language} />
           </div>
-          <nav className="explore-jumps" aria-label="Explore METC sections">
+          <nav className="explore-jumps" aria-label={language === "zh" ? "探索 METC 内容" : "Explore METC sections"}>
             {[
               { id: "teaching", number: "01", label: language === "zh" ? "教学设计" : "Teaching Design" },
               { id: "activities", number: "02", label: language === "zh" ? "课堂活动" : "Classroom Activities" },
-              { id: "voices", number: "03", label: language === "zh" ? "学生声音" : "Student Voices" }
+              { id: "voices", number: "03", label: language === "zh" ? "听 TA 们说" : "Student Voices" }
             ].map((item) => (
               <a href={`#${item.id}`} key={item.id}>
                 <span>{item.number}</span><strong>{item.label}</strong><i aria-hidden="true">↘</i>

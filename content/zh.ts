@@ -10,8 +10,8 @@ export const zh: HomepageCopy = {
   hero: {
     eyebrow: "Math and Engineering Teaching Club",
     title: "把问题带进课堂，",
-    titleAccent: "让好奇心动手发生",
-    body: "由学生创造、面向学生的数学与工程教学社团，我们把抽象概念变成能触摸、能讨论、能继续追问的课堂现场",
+    titleAccent: "带着好奇心动手探索",
+    body: "由学生组织、面向学生的数学与工程教学社团。我们一起动手制作、讨论问题、验证想法。",
     primaryCta: "开始探索",
     secondaryCta: "查看教学设计",
     scroll: "向下翻开课堂"
@@ -19,11 +19,11 @@ export const zh: HomepageCopy = {
   explore: {
     eyebrow: "01 — 探索 METC",
     title: "不是把答案讲完，而是把问题交给学生",
-    body: "METC 由高中生教学者共同发起。我们相信，最好的学习不是旁观一次正确示范，而是亲手经历猜想、制作、失败和重新解释。",
-    missionLabel: "Teaching Mission",
-    mission: "让更多学生在数学与工程里，看见自己的想法有重量。",
-    philosophyLabel: "Educational Philosophy",
-    philosophy: "学生为学生设计课堂：用真实问题连接知识，用作品留下学习的证据。",
+    body: "METC 由高中生共同发起。我们相信，学习需要猜想、动手制作、试错，再把发现讲清楚。",
+    missionLabel: "教学宗旨",
+    mission: "让更多学生认识到，自己的想法也能用于探索数学与工程问题。",
+    philosophyLabel: "教学理念",
+    philosophy: "学生为学生设计课堂：用真实问题串联知识，通过学生的作品了解他们学到了什么。",
     principle: "Curiosity becomes a question. A question becomes something we can build.",
     steps: [
       { number: "01", title: "Curiosity", detail: "从一个值得追问的现象开始" },
@@ -40,8 +40,8 @@ export const zh: HomepageCopy = {
         title: "加入 METC",
         body: "扫描微信二维码，与社团取得联系。",
         qrAlt: "METC 微信二维码",
-        qrUnavailable: "微信群二维码暂时无法显示，请等待工作人员更新。",
-        qrExpired: "微信群二维码已过期，请等待工作人员更新。",
+        qrUnavailable: "微信群二维码暂时无法显示。请通过“联系我们”联系社团。",
+        qrExpired: "微信群二维码已过期。请通过“联系我们”联系社团。",
         qrExpiresLabel: "有效期至"
       },
       contact: {
@@ -59,12 +59,12 @@ export const zh: HomepageCopy = {
   },
   teaching: {
     eyebrow: "02 — 教学设计",
-    title: "一堂课，先在纸上被认真设计",
-    body: "从 syllabus 到课堂 PPT，再到学生手里的材料包，每一页都围绕同一个问题组织：学生会在哪里产生真正的发现？",
+    title: "一堂课，从认真备课开始",
+    body: "从课程大纲、幻灯片到学生手里的材料，我们围绕学生能亲自探索什么来设计每一堂课。",
     edition: "METC COURSE NOTES · 2026",
     chapter: "UNIT 08 / 气体压力与反作用力",
     question: "小苏打和白醋，如何让瓶子飞起来？",
-    objective: "Learning objective",
+    objective: "学习目标",
     objectiveBody: "通过安全的瓶子火箭，观察二氧化碳气压与牛顿第三定律如何共同推动火箭。",
     materials: "材料",
     materialItems: ["500ml 耐压塑料瓶 × 1", "白醋 · 50–100ml", "小苏打 · 不超过 2 勺", "厚纸巾或滤纸", "胶塞与细线", "护目镜与手套"],
@@ -75,14 +75,14 @@ export const zh: HomepageCopy = {
       { time: "04", label: "摇晃触发，退至 3 米外观察" }
     ],
     note: "批注：密封前别让小苏打提前碰到醋。戴好护目镜，在安全线外观察。",
-    demoCta: "进入课程大纲图书馆"
+    demoCta: "进入课程图书馆"
   },
   activities: {
     eyebrow: "03 — 课堂活动",
-    title: "知识不是被展示，而是在桌面上发生",
+    title: "把想法放到桌上，一起动手验证",
     body: "教学者和学生围在同一张桌子边。每一次讨论、每一个歪掉的模型、每一轮重新测试，都是课堂真正的内容。",
     photoCaption: "上步小学 · 课堂活动",
-    demoCta: "进入成果展览"
+    demoCta: "浏览课堂相册"
   },
   voices: {
     eyebrow: "04 — 听 TA 们说",
@@ -92,8 +92,8 @@ export const zh: HomepageCopy = {
       { quote: "我们回答问题时，他们会给我们小零食。这种教学方式给了我们更多鼓励，也让我们更有信心回答问题。" },
       { quote: "他们的声音很清晰，讲解也很清楚，让复杂的句子变得更简单。" }
     ],
-    closing: "Learning leaves a voice. / 学习会留下声音。",
-    demoCta: "进入反馈"
+    closing: "What students say after class. / 听听学生课后的话。",
+    demoCta: "阅读学生反馈"
   },
   footer: {
     eyebrow: "Keep the question open.",
@@ -106,6 +106,7 @@ export const zh: HomepageCopy = {
         title: "隐私声明",
         body: [
           "浏览本网站无需创建账户或提交个人信息。",
+          "本浏览器会保存您的语言偏好，并用 Cookie 记录已拆封的反馈信编号。",
           "如未来新增联系或报名服务，METC 会在收集前说明信息用途与处理方式。"
         ]
       },

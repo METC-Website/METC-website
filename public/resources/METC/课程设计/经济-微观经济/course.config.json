@@ -8,5 +8,5 @@
   "icon": "market",
   "summary": {"zh": "从市场、供需与价格形成出发，让学生用身边的选择理解微观经济学。", "en": "Starting with markets, supply and demand, and price formation, students use everyday choices to understand microeconomics."},
   "contains": {"zh": ["市场与价格", "供需关系", "价格形成", "经济规律"], "en": ["Markets and prices", "Supply and demand", "Price formation", "Economic laws"]},
-  "lessonTitles": ["什么是市场", "供需关系", "价格形成", "货币与银行", "企业与市场"]
+  "lessonTitles": ["有限资源与无限需求", "供需关系", "货币与银行", "工作与工资", "企业与市场"]
 }

@@ -8,5 +8,5 @@
   "icon": "light",
   "summary": {"zh": "通过观察、实验与绘图，探索光的传播、反射和色彩形成。", "en": "Through observation, experiments, and drawing, students explore how light travels, reflects, and creates colour."},
   "contains": {"zh": ["光的传播", "反射实验", "彩虹形成"], "en": ["Light propagation", "Reflection experiments", "Rainbow formation"]},
-  "lessonTitles": ["光的传播", "反射实验", "彩虹形成"]
+  "lessonTitles": ["波的基本属性", "波谱", "彩虹形成"]
 }

@@ -225,7 +225,7 @@ export function HeroSection({ language, onAnchorClick }: HeroSectionProps) {
               {hero.title}
               <span>{hero.titleAccent}</span>
             </h1>
-            <div className="hero-topic-tags" aria-label="Learning approach">
+            <div className="hero-topic-tags" aria-label={language === "zh" ? "学习方式" : "Learning approach"}>
               {(language === "zh" ? ["真实问题", "动手制作", "同伴讨论"] : ["Real questions", "Build together", "Peer discussion"]).map((label) => <span key={label}>{label}</span>)}
             </div>
           </div>

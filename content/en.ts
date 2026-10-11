@@ -11,19 +11,19 @@ export const en: HomepageCopy = {
     eyebrow: "Math and Engineering Teaching Club",
     title: "Bring questions into class",
     titleAccent: "Let curiosity get its hands dirty",
-    body: "A student-created, student-centered math and engineering teaching club — we turn abstract ideas into things students can touch, discuss, and question again",
+    body: "A math and engineering teaching club run by students, for students. We build, discuss, and test ideas together.",
     primaryCta: "Start exploring",
     secondaryCta: "See teaching design",
     scroll: "Turn the page"
   },
   explore: {
     eyebrow: "01 — Explore METC",
-    title: "We do not finish the answer — we hand over the question",
-    body: "METC was started by high-school student educators. We believe learning happens not by watching a perfect demonstration, but by moving through guesses, making, failure, and explanation.",
+    title: "We give students questions, not just answers",
+    body: "METC was started by high school students. We believe students learn by making predictions, building, trying again when things go wrong, and explaining what they find.",
     missionLabel: "Teaching Mission",
-    mission: "Help more students see that their ideas carry weight in mathematics and engineering.",
+    mission: "Help more students see how their ideas can help solve problems in mathematics and engineering.",
     philosophyLabel: "Educational Philosophy",
-    philosophy: "Students design classes for students: real questions connect knowledge, and what we make becomes evidence of learning.",
+    philosophy: "Students design classes for students. We use real questions to connect concepts and student work to see what they have learned.",
     principle: "Curiosity becomes a question. A question becomes something we can build.",
     steps: [
       { number: "01", title: "Curiosity", detail: "Begin with a phenomenon worth asking about" },
@@ -40,8 +40,8 @@ export const en: HomepageCopy = {
         title: "Join METC",
         body: "Scan the WeChat QR code to connect with the club.",
         qrAlt: "METC WeChat QR code",
-        qrUnavailable: "The WeChat group QR code is temporarily unavailable. Please wait for the team to update it.",
-        qrExpired: "The WeChat group QR code has expired. Please wait for the team to update it.",
+        qrUnavailable: "The WeChat group QR code is temporarily unavailable. Please use “Contact us” to reach the team.",
+        qrExpired: "The WeChat group QR code has expired. Please use “Contact us” to reach the team.",
         qrExpiresLabel: "Valid through"
       },
       contact: {
@@ -59,10 +59,10 @@ export const en: HomepageCopy = {
   },
   teaching: {
     eyebrow: "02 — Teaching Design",
-    title: "A class is first designed with care on paper",
-    body: "From syllabus to slides to the materials in each student's hands, every page is shaped around one question: where will a real discovery happen?",
+    title: "A good class starts with careful planning",
+    body: "From syllabi and slides to classroom materials, we plan each lesson around what students can explore for themselves.",
     edition: "METC COURSE NOTES · 2026",
-    chapter: "UNIT 08 / GAS PRESSURE",
+    chapter: "UNIT 08 / GAS PRESSURE & REACTION FORCES",
     question: "How can baking soda and vinegar launch a bottle rocket?",
     objective: "Learning objective",
     objectiveBody: "Use a safe bottle rocket to observe how carbon-dioxide pressure and Newton's third law work together.",
@@ -79,10 +79,10 @@ export const en: HomepageCopy = {
   },
   activities: {
     eyebrow: "03 — Classroom Activities",
-    title: "Knowledge is not displayed — it happens on the table",
-    body: "Teachers and students gather around the same table. Every conversation, tilted model, and round of retesting is part of the real class.",
+    title: "Put ideas on the table and test them together",
+    body: "Teachers and students gather around the same table. Every discussion, wobbly model, and retest is part of the class.",
     photoCaption: "Shangbu Primary School · Classroom activity",
-    demoCta: "Enter the exhibition"
+    demoCta: "Browse classroom albums"
   },
   voices: {
     eyebrow: "04 — Student Voices",
@@ -92,8 +92,8 @@ export const en: HomepageCopy = {
       { quote: "They gave us treats when we answered a question. This teaching style gave us more encouragement and made us more confident to answer questions." },
       { quote: "Their voices are clear and explain it clearly. Making complex sentences more simple." }
     ],
-    closing: "Learning leaves a voice. / 学习会留下声音。",
-    demoCta: "Enter Feedback"
+    closing: "What students say after class. / 听听学生课后的话。",
+    demoCta: "Read student feedback"
   },
   footer: {
     eyebrow: "Keep the question open.",
@@ -106,6 +106,7 @@ export const en: HomepageCopy = {
         title: "Privacy statement",
         body: [
           "METC does not require visitors to create an account or submit personal information to browse this website.",
+          "This browser stores your language preference and uses a cookie to record the IDs of feedback letters you have opened.",
           "If a future contact or registration service collects information, its purpose and handling will be stated before submission."
         ]
       },
@@ -123,7 +124,7 @@ export const en: HomepageCopy = {
         body: [
           "This is the official website of METC — Math and Engineering Teaching Club.",
           "Teaching resources and classroom records are published for educational sharing and may be updated as the archive grows.",
-          "Portrait and feedback privacy: Classroom photographs, activity images, and feedback shown on this website are used only for educational sharing and club documentation. If any photograph or feedback concerns your image rights or personal privacy, please contact us through “Contact us” and identify the relevant content. We will verify and remove it promptly."
+          "Photo and feedback privacy: Classroom photographs, activity images, and feedback shown on this website are used only for educational sharing and club documentation. If any photograph or feedback concerns your image rights or personal privacy, please contact us through “Contact us” and identify the relevant content. We will verify and remove it promptly."
         ],
         developers: {
           label: "Developers",
