@@ -4,8 +4,8 @@ type LibraryHeroProps = { language: Language };
 
 export function LibraryHero({ language }: LibraryHeroProps) {
   const copy = language === "zh"
-    ? { eyebrow: "教学设计 · 课程档案", title: "METC 教学图书馆", body: "每一本书，都是一次把数学和工程带进课堂的尝试。", browse: "浏览书架" }
-    : { eyebrow: "Teaching Design · Curriculum Archive", title: "The METC Curriculum Library", body: "Every book holds a classroom experiment in mathematics, engineering, and curiosity.", browse: "Browse the shelves" };
+    ? { eyebrow: "教学设计 · 课程档案", title: "METC 课程图书馆", body: "每一本书，都收录了一门 METC 课程的教学材料。", browse: "浏览书架" }
+    : { eyebrow: "Teaching Design · Curriculum Archive", title: "The METC Curriculum Library", body: "Each book brings together the materials for a METC course.", browse: "Browse the shelves" };
 
   return (
     <section className="library-hero" aria-labelledby="library-title">

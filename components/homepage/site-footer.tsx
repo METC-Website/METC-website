@@ -70,9 +70,9 @@ export function SiteFooter({ language }: SiteFooterProps) {
 
       {activeContent ? (
         <div className="statement-dialog-layer" role="presentation">
-          <button className="statement-dialog-backdrop" type="button" aria-label="Close statement" onClick={closeStatement} />
+          <button className="statement-dialog-backdrop" type="button" aria-label={language === "zh" ? "关闭声明" : "Close statement"} onClick={closeStatement} />
           <section className="statement-dialog" role="dialog" aria-modal="true" aria-labelledby="statement-dialog-title">
-            <button ref={closeRef} className="statement-dialog-close" type="button" onClick={closeStatement} aria-label="Close">
+            <button ref={closeRef} className="statement-dialog-close" type="button" onClick={closeStatement} aria-label={language === "zh" ? "关闭" : "Close"}>
               ×
             </button>
             <p className="section-eyebrow">METC · {footer.statementLabel}</p>

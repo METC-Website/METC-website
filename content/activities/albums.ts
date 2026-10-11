@@ -43,10 +43,10 @@ export const albums: ActivityAlbum[] = resourceAlbums.filter((album) => album.ph
   return {
     id: album.id,
     title,
-    subtitle: local(album.subtitle),
-    description: local(album.description),
+    subtitle: { zh: album.subtitle, en: "METC classroom activities" },
+    description: { zh: album.description, en: "Classroom moments of students discussing, experimenting, creating, and sharing." },
     year: "METC",
-    category: local("活动成果"),
+    category: { zh: "活动成果", en: "Classroom activities" },
     coverPhotoId: album.coverPhotoId ?? album.photos[0].id,
     accent: album.accent,
     photos: album.photos.map((photo) => toPhoto(photo, title))
